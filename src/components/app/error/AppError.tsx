@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { routes } from '../../../utils/routes.ts';
 
 export const AppError = () => {
   return (
@@ -13,7 +14,7 @@ export const AppError = () => {
           Return to{' '}
           <Link
             className="text-green"
-            to="/app/home"
+            to={routes.app.home}
           >
             Home
           </Link>

@@ -1,16 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Database as DatabaseIcon } from 'react-feather';
+import { routes } from '../../../../../utils/routes.ts';
 
 export const Library = () => {
   const location = useLocation();
 
-  const colorCode = location.pathname.startsWith('/app/library')
+  const colorCode = location.pathname.startsWith(routes.app.library)
     ? '#ffffff'
     : '#cccccc';
 
   return (
     <Link
-      to="/app/library"
+      to={routes.app.library}
       className="flex flex-col items-center"
     >
       <DatabaseIcon

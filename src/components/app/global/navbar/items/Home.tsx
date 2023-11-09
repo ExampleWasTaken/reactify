@@ -1,16 +1,17 @@
 import { Home as HomeIcon } from 'react-feather';
 import { Link, useLocation } from 'react-router-dom';
+import { routes } from '../../../../../utils/routes.ts';
 
 export const Home = () => {
   const location = useLocation();
 
-  const colorCode = location.pathname.startsWith('/app/home')
+  const colorCode = location.pathname.startsWith(routes.app.home)
     ? '#ffffff'
     : '#cccccc';
 
   return (
     <Link
-      to="/app/home"
+      to={routes.app.home}
       className="flex flex-col items-center"
     >
       <HomeIcon

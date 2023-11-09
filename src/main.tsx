@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Root } from './components/root/Root.tsx';
 import { AppRoot } from './components/app/root/AppRoot.tsx';
 import { AppError } from './components/app/error/AppError.tsx';
+import { AppLogin } from './components/app/login/AppLogin.tsx';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
         errorElement: <AppError />,
         children: [
           {
-            path: 'home',
+            index: true,
             element: <p>home</p>,
           },
           {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: 'app/login',
+    element: <AppLogin />,
   },
 ]);
 
