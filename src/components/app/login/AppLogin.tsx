@@ -1,9 +1,19 @@
 import { publicAssets } from '../../../utils/publicAssets.ts';
+import { PrimaryButton } from '../../shared/PrimaryButton.tsx';
+import React from 'react';
 
 export const AppLogin = () => {
+  const loginHandler = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+
+    console.warn('not yet implemented');
+  };
+
   return (
     <div
-      className="bg-black text-white h-full flex flex-col justify-between"
+      className="bg-black select-none text-white h-full flex flex-col justify-between"
       aria-hidden="true"
     >
       <header className="mt-32 flex justify-center">
@@ -20,18 +30,24 @@ export const AppLogin = () => {
         />
       </section>
       <main className="mb-10 flex flex-col justify-end items-center">
-        <button
+        <PrimaryButton
           className="mb-6 px-28 py-5 bg-green text-black text-xl rounded-lg"
+          onClick={event => loginHandler(event)}
           aria-label="Login button"
         >
           Login
-        </button>
+        </PrimaryButton>
         <section className="px-10 text-[#ccc] flex flex-col items-center">
           <p className="text-center">
             Reactify is not associated with Spotify AB.
           </p>
           <p className="text-center">
-            Reactify does not own any content provided through the service.
+            {/* TODO: change to own T&C */}
+            By using the service you agree to the{' '}
+            <a href="https://www.spotify.com/us/legal/">
+              Terms&nbsp;and&nbsp;Conditions
+            </a>
+            .
           </p>
         </section>
       </main>
