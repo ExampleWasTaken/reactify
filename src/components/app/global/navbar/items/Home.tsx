@@ -5,17 +5,17 @@ import { routes } from '../../../../../utils/routes.ts';
 export const Home = () => {
   const location = useLocation();
 
-  const colorCode = location.pathname.startsWith(routes.app.home)
+  const colorCode = location.pathname.startsWith(routes.home)
     ? '#ffffff'
     : '#cccccc';
 
   return (
     <Link
-      to={routes.app.home}
-      className="flex flex-col items-center"
+      to={routes.home}
+      className="flex flex-col justify-center items-center space-y-1 no-underline"
     >
       <HomeIcon
-        size={43}
+        size={30}
         color={colorCode}
       />
       <p style={{ color: colorCode }}>Home</p>
