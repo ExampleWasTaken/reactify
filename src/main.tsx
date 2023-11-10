@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Root } from './components/root/Root.tsx';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { AppRoot } from './components/app/root/AppRoot.tsx';
 import { AppError } from './components/app/error/AppError.tsx';
 import { AppLogin } from './components/app/login/AppLogin.tsx';
@@ -10,7 +9,7 @@ import { AppLogin } from './components/app/login/AppLogin.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
+    element: <Outlet />,
     children: [
       {
         path: 'app',
