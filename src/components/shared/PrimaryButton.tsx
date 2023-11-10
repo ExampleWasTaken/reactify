@@ -11,7 +11,9 @@ export const PrimaryButton = ({
   onClick,
   children,
 }: PrimaryButtonProps) => {
-  const style = 'bg-green text-black rounded-lg ' + className;
+  const style =
+    'bg-green text-black rounded-lg hover:bg-green/90 active:bg-green/75 ' +
+    className;
   return (
     <button
       className={style}
