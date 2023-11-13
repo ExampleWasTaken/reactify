@@ -1,6 +1,6 @@
 export const routes = {
   web: {
-    landingPage: '/',
+    root: '/',
     documentation: '/documentaion',
     faq: '/faq',
     thirdPartyLicenses: '3rd-party-licenses',

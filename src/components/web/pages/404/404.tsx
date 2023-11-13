@@ -24,7 +24,7 @@ export const _404 = () => {
         <p>Otherwise we hope these options are somewhat helpful to you:</p>
         <ul>
           <li>
-            <Link to={routes.web.landingPage}>Home</Link>
+            <Link to={routes.web.root}>Home</Link>
           </li>
           <li>
             <Link to={routes.web.documentation}>Documentation</Link>
