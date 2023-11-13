@@ -15,7 +15,7 @@ export const Search = () => {
       className="flex flex-col justify-center items-center no-underline"
     >
       <SearchIcon
-        size={30}
+        size={27}
         color={colorCode}
       />
       <p style={{ color: colorCode }}>Search</p>

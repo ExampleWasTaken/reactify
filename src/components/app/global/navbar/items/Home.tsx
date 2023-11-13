@@ -15,7 +15,7 @@ export const Home = () => {
       className="flex flex-col justify-center items-center space-y-1 no-underline"
     >
       <HomeIcon
-        size={30}
+        size={27}
         color={colorCode}
       />
       <p style={{ color: colorCode }}>Home</p>

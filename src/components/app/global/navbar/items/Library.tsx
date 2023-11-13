@@ -15,7 +15,7 @@ export const Library = () => {
       className="flex flex-col justify-center items-center no-underline"
     >
       <DatabaseIcon
-        size={30}
+        size={27}
         color={colorCode}
       />
       <p style={{ color: colorCode }}>Library</p>
