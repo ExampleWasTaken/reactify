@@ -5,7 +5,8 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { AppRoot } from './components/app/root/AppRoot.tsx';
 import { AppError } from './components/app/error/AppError.tsx';
 import { AppLogin } from './components/app/login/AppLogin.tsx';
-import { LandingPage } from './components/web/landingpage/LandingPage.tsx';
+import { LandingPage } from './components/web/pages/landingpage/LandingPage.tsx';
+import { _404 } from './components/web/pages/404/404.tsx';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: 'app/login',
     element: <AppLogin />,
+  },
+  {
+    path: '*',
+    element: <_404 />,
   },
 ]);
 
