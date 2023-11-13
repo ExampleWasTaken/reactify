@@ -7,7 +7,7 @@ export default {
   theme: {
     colors: {
       'green': '#1db954',
-      'purple': 'rgb(49, 0, 69)',
+      'purple': '#400073',
       'white': '#ffffff',
       'black': '#191414',
     },
