@@ -7,4 +7,9 @@
         @apply text-green;
         text-decoration: underline;
     }
+
+    h1 {
+        font-weight: bold;
+        @apply text-5xl
+    }
 }
