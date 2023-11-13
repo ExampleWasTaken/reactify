@@ -5,8 +5,13 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { AppRoot } from './components/app/root/AppRoot.tsx';
 import { AppError } from './components/app/error/AppError.tsx';
 import { AppLogin } from './components/app/login/AppLogin.tsx';
+import { LandingPage } from './components/web/landingpage/LandingPage.tsx';
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <LandingPage />,
+  },
   {
     path: '/',
     element: <Outlet />,
