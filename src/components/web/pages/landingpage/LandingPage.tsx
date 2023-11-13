@@ -1,14 +1,13 @@
-import { publicAssets } from '../../../utils/publicAssets.ts';
+import { publicAssets } from '../../../../utils/publicAssets.ts';
 import { Link } from 'react-router-dom';
-import { PrimaryButton } from '../../shared/PrimaryButton.tsx';
-import { Footer } from '../footer/Footer.tsx';
+import { PrimaryButton } from '../../../shared/PrimaryButton.tsx';
+import { Footer } from '../../footer/Footer.tsx';
+import { Header } from '../../header/Header.tsx';
 
 export const LandingPage = () => {
   return (
     <>
-      <header className="sticky top-0 px-8 w-full h-20 flex flex-col justify-center bg-green text-white border-b">
-        <div className="font-bold text-3xl">Reactify&trade;</div>
-      </header>
+      <Header />
       <section className="p-8 leading-tight bg-green text-white ">
         <header>
           <h1 aria-label="Your reactive Spotify client">
