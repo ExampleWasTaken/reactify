@@ -42,10 +42,8 @@ export const Footer = () => {
       </section>
       <section className="my-10">
         <p className="text-xs text-[#888]">
-          <i>
-            This is just a hobby project of mine and not related to
-            Spotify&copy; in any way.
-          </i>
+          This is just a hobby project of mine and not related to Spotify&copy;
+          in any way.
         </p>
       </section>
       <footer className="mt-16 flex flex-row justify-end space-x-5">
