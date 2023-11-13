@@ -49,7 +49,7 @@ export const LandingPage = () => {
             Powered by{' '}
             <img
               src={publicAssets.spotifyLogoBlack}
-              className="inline mt-2 h-16"
+              className="inline mt-2 h-12"
             />
           </h1>
           <p className="mt-5">
