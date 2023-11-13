@@ -3,6 +3,7 @@ export const routes = {
     landingPage: '/',
     documentation: '/documentaion',
     faq: '/faq',
+    thirdPartyLicenses: '3rd-party-licenses',
   },
   faq: '/faq',
   app: '/app',

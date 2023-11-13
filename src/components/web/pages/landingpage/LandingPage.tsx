@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { PrimaryButton } from '../../../shared/PrimaryButton.tsx';
 import { Footer } from '../../footer/Footer.tsx';
 import { Header } from '../../header/Header.tsx';
+import { routes } from '../../../../utils/routes.ts';
 
 export const LandingPage = () => {
   return (
@@ -33,7 +34,7 @@ export const LandingPage = () => {
             matter your platform.{' '}
           </p>
           {/* TODO: /faq#pwa is not yet implemented. The exact link may chance in the future. */}
-          <Link to="/faq#pwa">Learn more...</Link>
+          <Link to={routes.web.faq + '#pwa'}>Learn more...</Link>
           <PrimaryButton
             className="block mt-12 px-16 h-12 rounded-lg"
             onClick={() =>
