@@ -8,7 +8,8 @@ export const AppRoot = () => {
   const location = useLocation();
 
   useEffect(() => {
-    location.pathname.endsWith(routes.app) && navigate(routes.home);
+    location.pathname.endsWith(routes.app) ||
+      (location.pathname.endsWith(routes.app + '/') && navigate(routes.home));
   }, []);
 
   return (
