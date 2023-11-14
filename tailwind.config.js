@@ -13,6 +13,9 @@ export default {
         'white': '#ffffff',
         'black': '#191414',
       },
+      backgroundImage: {
+        'aboutUsPattern': "url(/hero/pattern1.svg)"
+      }
     },
   },
   plugins: [],

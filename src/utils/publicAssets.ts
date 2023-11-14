@@ -5,4 +5,5 @@ export const publicAssets = {
   spotifyLogoBlack: '/Spotify_Logo_RGB_Black.png',
   spotifyLogoGreen: '/Spotify_Logo_RGB_Green.png',
   spotifyLogoWhite: '/Spotify_Logo_RGB_White.png',
+  aboutUsPatternBackground: '/pattern1.svg',
 };

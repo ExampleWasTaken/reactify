@@ -7,11 +7,23 @@ import { AppError } from './components/app/error/AppError.tsx';
 import { AppLogin } from './components/app/login/AppLogin.tsx';
 import { LandingPage } from './components/web/pages/landingpage/LandingPage.tsx';
 import { _404 } from './components/web/pages/404/404.tsx';
+import { WebRoot } from './components/web/WebRoot.tsx';
+import { About } from './components/web/pages/about/About.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <LandingPage />,
+  },
+  {
+    path: '/',
+    element: <WebRoot />,
+    children: [
+      {
+        path: 'about',
+        element: <About />,
+      },
+    ],
   },
   {
     path: '/',
