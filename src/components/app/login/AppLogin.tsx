@@ -13,7 +13,7 @@ export const AppLogin = () => {
 
   return (
     <div
-      className="bg-black select-none text-white h-full flex flex-col justify-between"
+      className="bg-black select-none text-white h-screen flex flex-col justify-between"
       aria-hidden="true"
     >
       <header className="mt-32 flex justify-center">
