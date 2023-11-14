@@ -1,8 +1,9 @@
 export const routes = {
   web: {
     root: '/',
-    documentation: '/documentaion',
+    documentation: '/documentation',
     faq: '/faq',
+    about: '/about',
     thirdPartyLicenses: '3rd-party-licenses',
   },
   faq: '/faq',
