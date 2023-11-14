@@ -40,8 +40,9 @@ export const LandingPage = () => {
             onClick={() =>
               console.warn('Installing the app as PWA is not supported yet.')
             }
+            disabled
           >
-            Install
+            Soon<sup>&trade;</sup>
           </PrimaryButton>
         </section>
         <section className="px-8 py-12">
