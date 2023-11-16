@@ -1,3 +1,8 @@
+/**
+ * This object keeps track of all routes in the project. <br>
+ * It should always be used over literal strings as keeping a list of all
+ * possible routes is easier to debug and more scalable.
+ */
 export const routes = {
   web: {
     root: '/',
