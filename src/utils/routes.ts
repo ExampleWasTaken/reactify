@@ -15,5 +15,6 @@ export const routes = {
     home: '/app/home',
     search: '/app/search',
     library: '/app/library',
+    login: '/app/login',
   },
 };
