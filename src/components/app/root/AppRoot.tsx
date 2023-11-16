@@ -18,7 +18,7 @@ export const AppRoot = () => {
 
   return (
     <div
-      className="w-screen h-screen overflow-scroll"
+      className="w-screen h-screen bg-black text-white overflow-scroll"
       id="app-container"
     >
       <Outlet />

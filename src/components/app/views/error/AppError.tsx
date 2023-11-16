@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { routes } from '../../../utils/routes.ts';
+import { routes } from '../../../../utils/routes.ts';
 
 export const AppError = () => {
   return (

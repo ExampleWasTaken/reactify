@@ -5,13 +5,13 @@ import { routes } from '../../../../../utils/routes.ts';
 export const Search = () => {
   const location = useLocation();
 
-  const colorCode = location.pathname.startsWith(routes.search)
+  const colorCode = location.pathname.startsWith(routes.app.search)
     ? '#ffffff'
     : '#cccccc';
 
   return (
     <Link
-      to={routes.search}
+      to={routes.app.search}
       className="flex flex-col justify-center items-center no-underline"
     >
       <SearchIcon

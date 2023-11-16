@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { AppRoot } from './components/app/root/AppRoot.tsx';
-import { AppError } from './components/app/error/AppError.tsx';
-import { AppLogin } from './components/app/login/AppLogin.tsx';
+import { AppError } from './components/app/views/error/AppError.tsx';
+import { AppLogin } from './components/app/views/login/AppLogin.tsx';
 import { LandingPage } from './components/web/pages/landingpage/LandingPage.tsx';
 import { _404 } from './components/web/pages/404/404.tsx';
 import { WebRoot } from './components/web/WebRoot.tsx';
 import { About } from './components/web/pages/about/About.tsx';
+import { LibraryView } from './components/app/views/library/LibraryView.tsx';
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'library',
-            element: <p>library</p>,
+            element: <LibraryView />,
           },
           {
             path: '*',

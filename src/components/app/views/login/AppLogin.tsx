@@ -1,5 +1,5 @@
-import { publicAssets } from '../../../utils/publicAssets.ts';
-import { PrimaryButton } from '../../shared/PrimaryButton.tsx';
+import { publicAssets } from '../../../../utils/publicAssets.ts';
+import { PrimaryButton } from '../../../shared/PrimaryButton.tsx';
 import React from 'react';
 
 export const AppLogin = () => {
