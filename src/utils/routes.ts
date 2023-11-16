@@ -6,9 +6,9 @@ export const routes = {
     about: '/about',
     thirdPartyLicenses: '3rd-party-licenses',
   },
-  faq: '/faq',
-  app: '/app',
-  home: '/app/home',
-  search: '/app/search',
-  library: '/app/library',
+  app: {
+    home: '/app/home',
+    search: '/app/search',
+    library: '/app/library',
+  },
 };
