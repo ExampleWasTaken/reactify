@@ -7,7 +7,7 @@ export const Search = () => {
 
   const colorCode = location.pathname.startsWith(routes.app.search)
     ? '#ffffff'
-    : '#cccccc';
+    : '#a7a7a7';
 
   return (
     <Link

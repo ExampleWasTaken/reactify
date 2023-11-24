@@ -5,13 +5,13 @@ import { routes } from '../../../../../utils/routes.ts';
 export const Library = () => {
   const location = useLocation();
 
-  const colorCode = location.pathname.startsWith(routes.library)
+  const colorCode = location.pathname.startsWith(routes.app.library)
     ? '#ffffff'
-    : '#cccccc';
+    : '#a7a7a7';
 
   return (
     <Link
-      to={routes.library}
+      to={routes.app.library}
       className="flex flex-col justify-center items-center no-underline"
     >
       <DatabaseIcon
