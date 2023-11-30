@@ -1,17 +1,14 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { routes } from '../../../utils/routes.ts';
+import { routes } from '../../utils/routes.ts';
 import { useEffect } from 'react';
-import { AppNavbar } from '../global/navbar/AppNavbar.tsx';
+import { AppNavbar } from './global/navbar/AppNavbar.tsx';
 
 export const AppRoot = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (
-      location.pathname.endsWith('app/') ||
-      location.pathname.endsWith('app')
-    ) {
+    if (location.pathname.endsWith('app/') || location.pathname.endsWith('app')) {
       navigate(routes.app.home);
     }
   }, []);

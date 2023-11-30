@@ -16,5 +16,7 @@ export const routes = {
     search: '/app/search',
     library: '/app/library',
     login: '/app/login',
+    authflow: '/app/authflow',
+    authflowFail: '/app/authflow/fail',
   },
 };

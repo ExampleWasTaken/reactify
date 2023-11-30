@@ -1,15 +1,20 @@
 import { LibraryItem } from './LibraryItem.tsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSpotify } from '../../../../hooks/useSpotify.tsx';
+import { Page, SimplifiedPlaylist } from '@spotify/web-api-ts-sdk';
 
 export const LibraryList = () => {
-  // @ts-ignore will be needed once playlist retrieval is impl.
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [playlists, setPlaylists] =
-    useState<SpotifyApi.ListOfCurrentUsersPlaylistsResponse | null>(null);
+  const spotify = useSpotify();
+  const [playlists, setPlaylists] = useState<Page<SimplifiedPlaylist> | null>(null);
 
-  // fetch playlists here
-  // note that liked songs are not returned as playlist but need to be fetched through the
+  // liked songs are not returned as playlist but need to be fetched through the
   // Get User's Saved Tracks endpoint
+
+  useEffect(() => {
+    (async () => {
+      setPlaylists(await spotify.sdk.currentUser.playlists.playlists(50));
+    })();
+  }, [spotify]);
 
   if (playlists === null) {
     return <p>empty state</p>;
@@ -23,9 +28,7 @@ export const LibraryList = () => {
             key={current.id}
             cover={current.images[0].url}
             title={current.name}
-            type={
-              current.type.charAt(0).toUpperCase() + current.type.substring(1)
-            }
+            type={current.type.charAt(0).toUpperCase() + current.type.substring(1)}
             author={current.owner.display_name}
           />
         );

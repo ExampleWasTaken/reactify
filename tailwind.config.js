@@ -12,7 +12,10 @@ export default {
         'purple': '#400073',
         'white': '#ffffff',
         'black': '#121212',
-        'subdued': '#a7a7a7'
+        'subdued': '#a7a7a7',
+        'negative': '#e91429',
+        'warning': '#ffa42b',
+        'positive': '#1ed760',
       },
       backgroundImage: {
         'aboutUsPattern': "url(/hero/pattern1.svg)"
