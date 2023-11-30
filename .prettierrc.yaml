@@ -4,3 +4,4 @@ trailingComma: es5
 arrowParens: avoid
 endOfLine: auto
 singleAttributePerLine: true
+printWidth: 120
