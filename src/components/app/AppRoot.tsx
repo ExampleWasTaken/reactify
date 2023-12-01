@@ -11,7 +11,7 @@ export const AppRoot = () => {
     if (location.pathname.endsWith('app/') || location.pathname.endsWith('app')) {
       navigate(routes.app.home);
     }
-  }, []);
+  }, [navigate, location]);
 
   return (
     <div
