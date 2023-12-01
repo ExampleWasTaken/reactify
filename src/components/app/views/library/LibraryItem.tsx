@@ -13,7 +13,7 @@ export const LibraryItem = ({ cover, title, type, author }: LibraryItemProps) =>
         className="h-full aspect-square"
       />
       <div className="flex flex-col justify-center overflow-hidden">
-        <p className="text-lg w-full truncate max-w-full border border-amber-500">{title}</p>
+        <p className="text-lg w-full truncate max-w-full">{title}</p>
         <div className="text-[#aaa]">{`${type} - ${author}`}</div>
       </div>
     </section>
