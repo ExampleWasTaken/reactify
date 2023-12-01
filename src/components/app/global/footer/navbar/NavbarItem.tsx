@@ -9,8 +9,8 @@ interface NavbarItemProps {
 
 export const NavbarItem = ({ type }: NavbarItemProps) => {
   const activeHandler = (isActive: boolean) => {
-    let className = 'w-1/3 flex flex-col justify-center items-center no-underline ';
-    return isActive ? (className += 'text-white') : (className += 'text-subdued');
+    const className = 'w-1/3 flex flex-col justify-center items-center no-underline ';
+    return isActive ? className + 'text-white' : className + 'text-subdued';
   };
 
   return (
