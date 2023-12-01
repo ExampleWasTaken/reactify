@@ -1,7 +1,4 @@
-import {
-  AuthorizationCodeWithPKCEStrategy,
-  SpotifyApi,
-} from '@spotify/web-api-ts-sdk';
+import { AuthorizationCodeWithPKCEStrategy, SpotifyApi } from '@spotify/web-api-ts-sdk';
 
 const CLIENT_ID = '5ca64c0a829949428154075795560d0d';
 const REDIRECT_URL = 'http://localhost:5173/app/authflow';
@@ -27,11 +24,7 @@ const SCOPE = [
 
 export class Spotify {
   private static instance: Spotify;
-  private auth = new AuthorizationCodeWithPKCEStrategy(
-    CLIENT_ID,
-    REDIRECT_URL,
-    SCOPE
-  );
+  private auth = new AuthorizationCodeWithPKCEStrategy(CLIENT_ID, REDIRECT_URL, SCOPE);
   private _sdk = new SpotifyApi(this.auth);
 
   public get sdk(): SpotifyApi {
