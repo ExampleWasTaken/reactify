@@ -9,9 +9,9 @@ import { LandingPage } from './components/web/pages/landingpage/LandingPage.tsx'
 import { _404 } from './components/web/pages/404/404.tsx';
 import { WebRoot } from './components/web/WebRoot.tsx';
 import { About } from './components/web/pages/about/About.tsx';
-import { LibraryView } from './components/app/views/library/LibraryView.tsx';
 import { PostAuth } from './components/app/views/login/PostAuth.tsx';
 import { PostAuthFail } from './components/app/views/login/PostAuthFail.tsx';
+import { LibraryList } from './components/app/views/library/list/LibraryList.tsx';
 
 const router = createBrowserRouter([
   {
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'library',
-            element: <LibraryView />,
+            element: <LibraryList />,
           },
           {
             path: '*',
