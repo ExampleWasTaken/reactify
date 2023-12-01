@@ -1,8 +1,9 @@
 import { LibraryItem } from './LibraryItem.tsx';
 import { publicAssets } from '../../../../../utils/publicAssets.ts';
 import { Plus, Search } from 'react-feather';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Spotify } from '../../../../../api/Spotify.ts';
+import { AppFooterContext } from '../../../global/footer/AppFooterContext.ts';
 
 interface LibraryListObject {
   id: string;
@@ -67,6 +68,7 @@ const fetchLibrary = async (): Promise<LibraryListObject[]> => {
 
 export const LibraryList = () => {
   const [library, setLibrary] = useState<LibraryListObject[] | null>(null);
+  const navbarHeight = useContext(AppFooterContext);
 
   useEffect(() => {
     fetchLibrary().then(library => setLibrary(library));
@@ -93,7 +95,10 @@ export const LibraryList = () => {
         </div>
       </header>
       <main>
-        <div className="py-4 flex flex-col space-y-4">
+        <div
+          className="py-4 flex flex-col space-y-4"
+          style={{ marginBottom: navbarHeight }}
+        >
           {library ? (
             library.map(current => {
               return (

@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { GrHomeRounded } from 'react-icons/gr';
 import { LuLibrary, LuSearch } from 'react-icons/lu';
-import { routes } from '../../../../utils/routes.ts';
+import { routes } from '../../../../../utils/routes.ts';
 
 interface NavbarItemProps {
   type: 'home' | 'search' | 'lib';
