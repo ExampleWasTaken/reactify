@@ -21,7 +21,7 @@ export const LibraryList = () => {
   }
 
   return (
-    <div className="pt-5 flex flex-col space-y-4">
+    <div className="py-4 flex flex-col space-y-4">
       {playlists.items.map(current => {
         return (
           <LibraryItem
