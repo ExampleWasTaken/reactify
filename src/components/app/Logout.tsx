@@ -10,7 +10,7 @@ export const Logout = () => {
   useEffect(() => {
     spotify.sdk.logOut();
     navigate(routes.app.login);
-  }, [spotify]);
+  }, [spotify, navigate]);
 
   return <></>;
 };
