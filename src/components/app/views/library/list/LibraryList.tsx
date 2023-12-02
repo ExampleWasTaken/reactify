@@ -4,6 +4,7 @@ import { Plus, Search } from 'react-feather';
 import { useContext, useEffect, useState } from 'react';
 import { Spotify } from '../../../../../api/Spotify.ts';
 import { AppFooterContext } from '../../../global/footer/AppFooterContext.ts';
+import { ContainerSpinner } from '../../../global/loaders/ContainerSpinner.tsx';
 
 interface LibraryListObject {
   id: string;
@@ -95,12 +96,12 @@ export const LibraryList = () => {
         </div>
       </header>
       <main>
-        <div
-          className="py-4 flex flex-col space-y-4"
-          style={{ marginBottom: navbarHeight }}
-        >
-          {library ? (
-            library.map(current => {
+        {library ? (
+          <div
+            className="py-4 flex flex-col space-y-4"
+            style={{ marginBottom: navbarHeight }}
+          >
+            {library.map(current => {
               return (
                 <LibraryItem
                   key={current.id}
@@ -110,11 +111,11 @@ export const LibraryList = () => {
                   owner={current.owner}
                 />
               );
-            })
-          ) : (
-            <p>empty state</p>
-          )}
-        </div>
+            })}
+          </div>
+        ) : (
+          <ContainerSpinner className="mt-52" />
+        )}
       </main>
     </>
   );

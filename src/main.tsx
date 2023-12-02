@@ -12,6 +12,7 @@ import { About } from './components/web/pages/about/About.tsx';
 import { PostAuth } from './components/app/views/login/PostAuth.tsx';
 import { PostAuthFail } from './components/app/views/login/PostAuthFail.tsx';
 import { LibraryList } from './components/app/views/library/list/LibraryList.tsx';
+import { Logout } from './components/app/Logout.tsx';
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
   {
     path: 'app/authflow/fail',
     element: <PostAuthFail />,
+  },
+  {
+    path: '/app/logout',
+    element: <Logout />,
   },
   {
     path: '*',
