@@ -1,10 +1,11 @@
 import { LibraryItem } from './LibraryItem.tsx';
-import { publicAssets } from '../../../../../utils/publicAssets.ts';
 import { Plus, Search } from 'react-feather';
 import { useContext, useEffect, useState } from 'react';
 import { Spotify } from '../../../../../api/Spotify.ts';
 import { AppFooterContext } from '../../../global/footer/AppFooterContext.ts';
 import { ContainerSpinner } from '../../../global/loaders/ContainerSpinner.tsx';
+import { useSpotify } from '../../../../../hooks/useSpotify.tsx';
+import { publicAssets } from '../../../../../utils/publicAssets.ts';
 
 interface LibraryListObject {
   id: string;
@@ -68,10 +69,18 @@ const fetchLibrary = async (): Promise<LibraryListObject[]> => {
 };
 
 export const LibraryList = () => {
+  const spotify = useSpotify();
+
   const [library, setLibrary] = useState<LibraryListObject[] | null>(null);
+  const [userProfilePic, setUserProfilePic] = useState('');
+
   const navbarHeight = useContext(AppFooterContext);
 
   useEffect(() => {
+    spotify.sdk.currentUser
+      .profile()
+      .then(profile => setUserProfilePic(profile.images[0].url))
+      .catch(() => setUserProfilePic(publicAssets.spotifyIconGreen));
     fetchLibrary().then(library => setLibrary(library));
   }, []);
 
@@ -84,8 +93,8 @@ export const LibraryList = () => {
         <div className="flex justify-between items-center space-x-3">
           {/* Remove and change for user icon once mockup is in place */}
           <img
-            className="h-10"
-            src={publicAssets.spotifyIconGreen}
+            className="h-10 rounded-full"
+            src={userProfilePic}
             alt="User profile picture"
           />
           <h1 className="text-3xl">Your Library</h1>
