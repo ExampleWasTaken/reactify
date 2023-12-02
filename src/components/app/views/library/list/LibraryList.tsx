@@ -1,5 +1,4 @@
 import { LibraryItem } from './LibraryItem.tsx';
-import { Plus, Search } from 'react-feather';
 import { useContext, useEffect, useState } from 'react';
 import { Spotify } from '../../../../../api/Spotify.ts';
 import { AppFooterContext } from '../../../global/footer/AppFooterContext.ts';
@@ -82,7 +81,7 @@ export const LibraryList = () => {
       .then(profile => setUserProfilePic(profile.images[0].url))
       .catch(() => setUserProfilePic(publicAssets.spotifyIconGreen));
     fetchLibrary().then(library => setLibrary(library));
-  }, []);
+  }, [spotify]);
 
   // liked songs are not returned as playlist but need to be fetched through the
   // Get User's Saved Tracks endpoint
@@ -99,10 +98,11 @@ export const LibraryList = () => {
           />
           <h1 className="text-3xl">Your Library</h1>
         </div>
-        <div className="flex justify-between items-center space-x-4">
+        {/* TODO: implement playlist search and creation */}
+        {/*<div className="flex justify-between items-center space-x-4">
           <Search size={30} />
           <Plus size={30} />
-        </div>
+        </div>*/}
       </header>
       <main>
         {library ? (
