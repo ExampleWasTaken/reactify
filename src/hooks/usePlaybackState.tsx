@@ -6,10 +6,9 @@ import { Spotify } from '../api/Spotify.ts';
  */
 export interface CustomPlaybackState extends PlaybackState {
   /**
-   * Whether the item of the playback state is saved in the user's library. <br>
-   * Will always be of length 1.
+   * Whether the item of the playback state is saved in the user's library.
    */
-  saved: boolean[];
+  saved: boolean;
 }
 
 /**
@@ -25,7 +24,7 @@ export const usePlaybackState = () => {
     try {
       const state = await sdk.player.getPlaybackState(market, additional_types);
       const saved = await sdk.currentUser.tracks.hasSavedTracks([state.item.id]);
-      return { ...state, saved };
+      return { ...state, saved: saved[0] };
     } catch (e) {
       console.error('Error while fetching playback state:', e);
       return null;
