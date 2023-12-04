@@ -99,6 +99,7 @@ export const MiniPlayer = () => {
             <img
               src={(playbackState.item as Track).album.images[0].url}
               className="aspect-square rounded w-full h-full"
+              alt="Cover art"
             />
           </div>
           <div
