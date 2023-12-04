@@ -8,10 +8,13 @@ import { DeviceIcon } from './DeviceIcon.tsx';
 import { FastAverageColor } from 'fast-average-color';
 import { colord, extend } from 'colord';
 import a11yPlugin from 'colord/plugins/a11y';
+import { useArtistArray } from '../../../../hooks/useArtistArray.tsx';
+import { FaSpotify } from 'react-icons/fa6';
 
 export const MiniPlayer = () => {
   const { fetchPlaybackState } = usePlaybackState();
   const { calcProgress } = usePlaybackBar();
+  const { formatArtists } = useArtistArray();
 
   const [backgroundColor, setBackgroundColor] = useState('#000');
   const [playbackState, setPlaybackState] = useState<CustomPlaybackState | null>(null);
@@ -89,7 +92,7 @@ export const MiniPlayer = () => {
         id="mini-player-content-container"
       >
         <div
-          className="w-full h-full flex space-x-2 basis-2/3"
+          className="w-full h-full flex space-x-2 max-w-[66.666667%] basis-2/3"
           id="mini-player-metadata-container"
         >
           <div
@@ -106,13 +109,14 @@ export const MiniPlayer = () => {
             className="w-full h-full overflow-hidden flex flex-col justify-center"
             id="mini-player-track-details"
           >
-            <p className="truncate text-sm font-medium">{playbackState.item.name}</p>
-            <p className="truncate text-xs text-white/90">
-              {(playbackState.item as Track).artists.map((current, i) => {
-                if (i < (playbackState.item as Track).artists.length - 1) {
-                  return current.name + ', ';
-                } else return current.name;
-              })}
+            {/* TODO: once active playback is implemented this should only display the currently playing device when it's not playing back itself. */}
+            <p className="truncate text-sm font-medium">
+              {playbackState.item.name} &bull; {formatArtists((playbackState.item as Track).artists)}
+            </p>
+            {/*<p className="truncate text-xs text-white/90">{formatArtists((playbackState.item as Track).artists)}</p>*/}
+            <p className="flex items-center space-x-1 truncate text-xs text-green">
+              <FaSpotify />
+              <p>{playbackState.device.name}</p>
             </p>
           </div>
         </div>
