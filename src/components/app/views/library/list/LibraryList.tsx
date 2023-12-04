@@ -1,7 +1,6 @@
 import { LibraryItem } from './LibraryItem.tsx';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Spotify } from '../../../../../api/Spotify.ts';
-import { AppFooterContext } from '../../../global/footer/AppFooterContext.ts';
 import { ContainerSpinner } from '../../../global/loaders/ContainerSpinner.tsx';
 import { useSpotify } from '../../../../../hooks/useSpotify.tsx';
 import { publicAssets } from '../../../../../utils/publicAssets.ts';
@@ -73,8 +72,6 @@ export const LibraryList = () => {
   const [library, setLibrary] = useState<LibraryListObject[] | null>(null);
   const [userProfilePic, setUserProfilePic] = useState('');
 
-  const navbarHeight = useContext(AppFooterContext);
-
   useEffect(() => {
     spotify.sdk.currentUser
       .profile()
@@ -108,7 +105,7 @@ export const LibraryList = () => {
         {library ? (
           <div
             className="py-4 flex flex-col space-y-4"
-            style={{ marginBottom: navbarHeight }}
+            style={{ paddingBottom: 'calc(137px + 1rem)' }}
           >
             {library.map(current => {
               return (
