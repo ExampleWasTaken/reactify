@@ -1,5 +1,5 @@
 import { AppNavbar } from './navbar/AppNavbar.tsx';
-import { MiniPlayer } from '../player/MiniPlayer.tsx';
+import { MiniPlayer } from '../player/mini-player/MiniPlayer.tsx';
 
 export const AppFooter = () => {
   return (

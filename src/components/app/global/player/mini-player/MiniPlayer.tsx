@@ -1,14 +1,14 @@
 import { IoIosPause, IoIosPlay, IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IconContext } from 'react-icons';
-import { PlaybackProgressInfo, usePlaybackBar } from '../../../../hooks/usePlaybackBar.tsx';
-import { CustomPlaybackState, usePlaybackState } from '../../../../hooks/usePlaybackState.tsx';
+import { PlaybackProgressInfo, usePlaybackBar } from '../../../../../hooks/usePlaybackBar.tsx';
+import { CustomPlaybackState, usePlaybackState } from '../../../../../hooks/usePlaybackState.tsx';
 import { useEffect, useState } from 'react';
 import { Track } from '@spotify/web-api-ts-sdk';
-import { DeviceIcon } from './DeviceIcon.tsx';
+import { DeviceIcon } from '../DeviceIcon.tsx';
 import { FastAverageColor } from 'fast-average-color';
 import { colord, extend } from 'colord';
 import a11yPlugin from 'colord/plugins/a11y';
-import { useArtistArray } from '../../../../hooks/useArtistArray.tsx';
+import { useArtistArray } from '../../../../../hooks/useArtistArray.tsx';
 import { FaSpotify } from 'react-icons/fa6';
 
 export const MiniPlayer = () => {
