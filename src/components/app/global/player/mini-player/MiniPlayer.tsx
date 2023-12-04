@@ -114,10 +114,10 @@ export const MiniPlayer = () => {
               {playbackState.item.name} &bull; {formatArtists((playbackState.item as Track).artists)}
             </p>
             {/*<p className="truncate text-xs text-white/90">{formatArtists((playbackState.item as Track).artists)}</p>*/}
-            <p className="flex items-center space-x-1 truncate text-xs text-green">
+            <div className="flex items-center space-x-1 truncate text-xs text-green">
               <FaSpotify />
               <p>{playbackState.device.name}</p>
-            </p>
+            </div>
           </div>
         </div>
         <div

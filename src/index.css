@@ -2,10 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
     a {
         @apply text-green;
         @apply underline;
+        -webkit-tap-highlight-color: transparent;
+
     }
 
     h1 {
