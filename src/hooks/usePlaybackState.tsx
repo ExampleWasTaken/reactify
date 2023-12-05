@@ -23,7 +23,11 @@ export const usePlaybackState = () => {
 
     try {
       const state = await sdk.player.getPlaybackState(market, additional_types);
+      if (!state) {
+        return null;
+      }
       const saved = await sdk.currentUser.tracks.hasSavedTracks([state.item.id]);
+
       return { ...state, saved: saved[0] };
     } catch (e) {
       console.error('Error while fetching playback state:', e);
