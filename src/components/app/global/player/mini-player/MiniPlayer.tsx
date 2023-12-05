@@ -2,13 +2,14 @@ import { IoIosPause, IoIosPlay, IoMdHeart, IoMdHeartEmpty } from 'react-icons/io
 import { IconContext } from 'react-icons';
 import { PlaybackProgressInfo, usePlaybackBar } from '../../../../../hooks/usePlaybackBar.tsx';
 import { CustomPlaybackState, usePlaybackState } from '../../../../../hooks/usePlaybackState.tsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Track } from '@spotify/web-api-ts-sdk';
 import { DeviceIcon } from '../DeviceIcon.tsx';
 import { FastAverageColor } from 'fast-average-color';
 import { colord, extend } from 'colord';
 import a11yPlugin from 'colord/plugins/a11y';
 import { useArtistArray } from '../../../../../hooks/useArtistArray.tsx';
+import { TitleMarquee } from '../TitleMarquee.tsx';
 import { FaSpotify } from 'react-icons/fa6';
 
 export const MiniPlayer = () => {
@@ -23,6 +24,8 @@ export const MiniPlayer = () => {
   // This means that the progress value is not synchronized to the returned timestamp. Therefore, we must keep track of the timestamp ourselves.
   const [lastPlaybackStateFetchTimestamp, setLastPlaybackStateFetchTimestamp] = useState(0);
   const [progress, setProgress] = useState<PlaybackProgressInfo | null>(null);
+
+  const playerTrackDetailsRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const playbackUpdateId = setInterval(() => {
@@ -107,13 +110,16 @@ export const MiniPlayer = () => {
           </div>
           <div
             className="w-full h-full overflow-hidden flex flex-col justify-center"
+            ref={playerTrackDetailsRef}
             id="mini-player-track-details"
           >
             {/* TODO: once active playback is implemented this should only display the currently playing device when it's not playing back itself. */}
-            <p className="truncate text-sm font-medium">
-              {playbackState.item.name} &bull; {formatArtists((playbackState.item as Track).artists)}
-            </p>
-            {/*<p className="truncate text-xs text-white/90">{formatArtists((playbackState.item as Track).artists)}</p>*/}
+            <TitleMarquee
+              content={`${playbackState.item.name} • ${formatArtists((playbackState.item as Track).artists)}`}
+              parentRef={playerTrackDetailsRef}
+              className="truncate text-sm font-medium"
+            />
+            {/*<p className="truncate text-xs text-white/90">{(playbackState.item as Track).artists[0].name}</p>*/}
             <div className="flex items-center space-x-1 truncate text-xs text-green">
               <FaSpotify />
               <p>{playbackState.device.name}</p>
