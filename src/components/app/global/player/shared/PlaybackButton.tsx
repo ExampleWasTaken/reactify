@@ -11,6 +11,8 @@ interface PlaybackButtonProps {
   className?: string;
 }
 
+const TOAST_OPTS = { id: 'playback_error' };
+
 export const PlaybackButton = ({ playbackState, size, className }: PlaybackButtonProps) => {
   const { startOrResumePlayback, pausePlayback } = usePlaybackState();
 
@@ -20,7 +22,12 @@ export const PlaybackButton = ({ playbackState, size, className }: PlaybackButto
     const deviceId = playbackState.device.id;
 
     if (!deviceId) {
-      toast.error('Could not determine device to playback on.');
+      toast.error('Could not determine device to playback on.', TOAST_OPTS);
+      return;
+    }
+
+    if (playbackState.actions.resuming) {
+      toast.error('Not allowed!', TOAST_OPTS);
       return;
     }
 
@@ -32,7 +39,12 @@ export const PlaybackButton = ({ playbackState, size, className }: PlaybackButto
     const deviceId = playbackState.device.id;
 
     if (!deviceId) {
-      toast.error('Could not determine device to pause.');
+      toast.error('Could not determine device to pause.', TOAST_OPTS);
+      return;
+    }
+
+    if (playbackState.actions.pausing) {
+      toast.error('Not allowed!', TOAST_OPTS);
       return;
     }
 
