@@ -3,6 +3,7 @@ import { routes } from '../../utils/routes.ts';
 import { useEffect, useState } from 'react';
 import { AppFooter } from './global/footer/AppFooter.tsx';
 import { useSpotify } from '../../hooks/useSpotify.tsx';
+import { Toaster } from 'react-hot-toast';
 
 export const AppRoot = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ export const AppRoot = () => {
         <FullscreenSpinner />
       )}*/}
       <Outlet />
+      <Toaster position="bottom-center" />
       <AppFooter />
     </div>
   );

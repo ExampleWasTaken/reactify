@@ -1,4 +1,4 @@
-import { IoIosPause, IoIosPlay, IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
+import { IoIosPause, IoIosPlay } from 'react-icons/io';
 import { IconContext } from 'react-icons';
 import { PlaybackProgressInfo, usePlaybackBar } from '../../../../../hooks/usePlaybackBar.tsx';
 import { CustomPlaybackState, usePlaybackState } from '../../../../../hooks/usePlaybackState.tsx';
@@ -11,6 +11,7 @@ import a11yPlugin from 'colord/plugins/a11y';
 import { useArtistArray } from '../../../../../hooks/useArtistArray.tsx';
 import { TitleMarquee } from '../TitleMarquee.tsx';
 import { FaSpotify } from 'react-icons/fa6';
+import { LikedSongHeart } from '../LikedSongHeart.tsx';
 
 export const MiniPlayer = () => {
   const { fetchPlaybackState } = usePlaybackState();
@@ -132,7 +133,11 @@ export const MiniPlayer = () => {
         >
           <IconContext.Provider value={{ size: '25' }}>
             {playbackState.is_playing ? <IoIosPause /> : <IoIosPlay />}
-            {playbackState.saved ? <IoMdHeart className="text-green" /> : <IoMdHeartEmpty />}
+            <LikedSongHeart
+              size={25}
+              track={playbackState.item as Track}
+              liked={playbackState.saved}
+            />
             <DeviceIcon deviceType={playbackState.device.type} />
           </IconContext.Provider>
         </div>
