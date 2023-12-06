@@ -1,6 +1,6 @@
 import { IconContext } from 'react-icons';
 import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
-import { useSpotify } from '../../../../hooks/useSpotify.tsx';
+import { useSpotify } from '../../../../../hooks/useSpotify.tsx';
 import { Track } from '@spotify/web-api-ts-sdk';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';

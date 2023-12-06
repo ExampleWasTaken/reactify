@@ -7,6 +7,7 @@ export const PostAuth = () => {
   const navigate = useNavigate();
   const spotify = useSpotify();
 
+  // TODO: this could be moved to a react-router loader
   // Redirecting logic
   useEffect(() => {
     (async () => {

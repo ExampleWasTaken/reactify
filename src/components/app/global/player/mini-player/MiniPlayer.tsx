@@ -1,17 +1,17 @@
-import { IoIosPause, IoIosPlay } from 'react-icons/io';
 import { IconContext } from 'react-icons';
 import { PlaybackProgressInfo, usePlaybackBar } from '../../../../../hooks/usePlaybackBar.tsx';
 import { CustomPlaybackState, usePlaybackState } from '../../../../../hooks/usePlaybackState.tsx';
 import { useEffect, useRef, useState } from 'react';
 import { Track } from '@spotify/web-api-ts-sdk';
-import { DeviceIcon } from '../DeviceIcon.tsx';
+import { DeviceIcon } from '../shared/DeviceIcon.tsx';
 import { FastAverageColor } from 'fast-average-color';
 import { colord, extend } from 'colord';
 import a11yPlugin from 'colord/plugins/a11y';
 import { useArtistArray } from '../../../../../hooks/useArtistArray.tsx';
-import { TitleMarquee } from '../TitleMarquee.tsx';
+import { TitleMarquee } from '../shared/TitleMarquee.tsx';
 import { FaSpotify } from 'react-icons/fa6';
-import { LikedSongHeart } from '../LikedSongHeart.tsx';
+import { LikedSongHeart } from '../shared/LikedSongHeart.tsx';
+import { PlaybackButton } from '../shared/PlaybackButton.tsx';
 
 export const MiniPlayer = () => {
   const { fetchPlaybackState } = usePlaybackState();
@@ -132,7 +132,10 @@ export const MiniPlayer = () => {
           id="mini-player-controls-container"
         >
           <IconContext.Provider value={{ size: '25' }}>
-            {playbackState.is_playing ? <IoIosPause /> : <IoIosPlay />}
+            <PlaybackButton
+              playbackState={playbackState}
+              size={25}
+            />
             <LikedSongHeart
               size={25}
               track={playbackState.item as Track}
