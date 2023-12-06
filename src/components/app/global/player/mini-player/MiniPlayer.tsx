@@ -18,7 +18,7 @@ export const MiniPlayer = () => {
   const { formatArtists } = useArtistArray();
   const { getHighestPopulationWithBestContrast } = useColorPalette();
 
-  const [backgroundColor, setBackgroundColor] = useState('#000');
+  const [backgroundColor, setBackgroundColor] = useState('#191414');
   const [playbackState, setPlaybackState] = useState<CustomPlaybackState | null>(null);
 
   // This is needed as the API returns a cached value that is only updated once the playback state has changed.
@@ -120,7 +120,7 @@ export const MiniPlayer = () => {
             ref={playerTrackDetailsRef}
             id="mini-player-track-details"
           >
-            {/* TODO: once active playback is implemented this should only display the currently playing device when it's not playing back itself. */}
+            {/* TODO: once playback SDK is implemented this should only display the currently playing device when it's not playing back itself. */}
             <TitleMarquee
               content={`${playbackState.item.name} • ${formatArtists((playbackState.item as Track).artists)}`}
               parentRef={playerTrackDetailsRef}
