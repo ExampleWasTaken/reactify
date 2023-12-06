@@ -146,7 +146,7 @@ export const MiniPlayer = () => {
         </div>
       </div>
       <div
-        className="w-full h-[2px] bg-white/50"
+        className="w-full h-[2px] bg-white/20"
         id="mini-player-playback-bar-container"
       >
         <div
