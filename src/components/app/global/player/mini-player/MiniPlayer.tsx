@@ -4,7 +4,6 @@ import { CustomPlaybackState, usePlaybackState } from '../../../../../hooks/useP
 import { useEffect, useRef, useState } from 'react';
 import { Track } from '@spotify/web-api-ts-sdk';
 import { DeviceIcon } from '../shared/DeviceIcon.tsx';
-import { FastAverageColor } from 'fast-average-color';
 import { colord, extend } from 'colord';
 import a11yPlugin from 'colord/plugins/a11y';
 import { useArtistArray } from '../../../../../hooks/useArtistArray.tsx';
@@ -12,6 +11,7 @@ import { TitleMarquee } from '../shared/TitleMarquee.tsx';
 import { FaSpotify } from 'react-icons/fa6';
 import { LikedSongHeart } from '../shared/LikedSongHeart.tsx';
 import { PlaybackButton } from '../shared/PlaybackButton.tsx';
+import Vibrant from 'node-vibrant/lib/bundle';
 
 export const MiniPlayer = () => {
   const { fetchPlaybackState } = usePlaybackState();
@@ -61,22 +61,45 @@ export const MiniPlayer = () => {
 
     (async () => {
       extend([a11yPlugin]);
-      const fac = new FastAverageColor();
-      const dominantColor = await fac.getColorAsync((playbackState.item as Track).album.images[0].url, {
-        ignoredColor: [
-          [0, 0, 0],
-          [255, 255, 255],
-        ],
-      });
 
-      const color = colord(dominantColor.hex);
-      const contrast = color.contrast('#1db954');
+      Vibrant.from((playbackState.item as Track).album.images[0].url).getPalette();
 
-      if (contrast < 7) {
-        setBackgroundColor(color.darken(color.luminance()).toHex());
-        return;
-      }
-      setBackgroundColor(dominantColor.hex);
+      Vibrant.from((playbackState.item as Track).album.images[0].url)
+        .getPalette()
+        .then(palette => {
+          /*if (!palette.Vibrant || !palette.DarkVibrant || !palette.LightVibrant) {
+            console.warn('Palette has no swatches');
+            return;
+          }
+
+          if (!palette.Vibrant.population || !palette.DarkVibrant.population || !palette.LightVibrant.population) {
+            console.warn('Swatches have no population:', palette);
+            return;
+          }*/
+
+          const vibrant = palette.Vibrant;
+          const lightVibrant = palette.LightVibrant;
+          const darkVibrant = palette.DarkVibrant;
+
+          const colors = [vibrant, lightVibrant, darkVibrant].sort((a, b) => b!.population - a!.population);
+
+          // Light green album covers may result in insufficient contrast.
+          // Example: https://open.spotify.com/track/38ycERajOuBUKVzbNNQQXh?si=545932658ba14688
+
+          for (const current of colors) {
+            const contrast = colord(current!.hex).contrast('#1db954');
+            console.log(contrast);
+            if (contrast < 7) {
+              continue;
+            }
+            setBackgroundColor(current!.hex);
+            return;
+          }
+          setBackgroundColor(colors[0]!.hex);
+        })
+        .catch(e => {
+          console.error('Error while extracting color from cover:', e);
+        });
     })();
   }, [playbackState]);
 
@@ -86,10 +109,15 @@ export const MiniPlayer = () => {
 
   return (
     <div
-      className="h-14 m-2 mt-0 px-2 rounded flex flex-col items-center"
+      className="h-14 m-2 mt-0 px-2 rounded flex flex-col items-center relative z-[1]"
       style={{ backgroundColor: backgroundColor }}
       id="mini-player-container"
     >
+      <div
+        className="absolute left-0 top-0 right-0 bottom-0 rounded z-[-1]"
+        style={{ backgroundColor: 'rgba(0, 0, 0, .48)' }}
+        id="mini-player-darken-overlay"
+      />
       <div
         className="w-full py-2 flex justify-center z-10"
         style={{ height: 'calc(3.5rem - 2px)' }}
