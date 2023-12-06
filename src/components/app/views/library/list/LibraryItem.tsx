@@ -9,7 +9,7 @@ interface LibraryItemProps {
 
 export const LibraryItem = ({ cover, name, type, owner }: LibraryItemProps) => {
   return (
-    <section className="px-5 h-16 flex items-center space-x-3 transition-transform active:scale-[.99]">
+    <section className="px-5 h-16 flex items-center space-x-3 active:scale-[.995]">
       <img
         src={cover}
         className={clsx('h-full aspect-square', type.toLowerCase() === 'artist' ? ' rounded-full' : '')}
