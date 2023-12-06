@@ -4,19 +4,19 @@ import { CustomPlaybackState, usePlaybackState } from '../../../../../hooks/useP
 import { useEffect, useRef, useState } from 'react';
 import { Track } from '@spotify/web-api-ts-sdk';
 import { DeviceIcon } from '../shared/DeviceIcon.tsx';
-import { colord, extend } from 'colord';
-import a11yPlugin from 'colord/plugins/a11y';
 import { useArtistArray } from '../../../../../hooks/useArtistArray.tsx';
 import { TitleMarquee } from '../shared/TitleMarquee.tsx';
 import { FaSpotify } from 'react-icons/fa6';
 import { LikedSongHeart } from '../shared/LikedSongHeart.tsx';
 import { PlaybackButton } from '../shared/PlaybackButton.tsx';
 import Vibrant from 'node-vibrant/lib/bundle';
+import { useColorPalette } from '../../../../../hooks/useColorPalette.tsx';
 
 export const MiniPlayer = () => {
   const { fetchPlaybackState } = usePlaybackState();
   const { calcProgress } = usePlaybackBar();
   const { formatArtists } = useArtistArray();
+  const { getHighestPopulationWithBestContrast } = useColorPalette();
 
   const [backgroundColor, setBackgroundColor] = useState('#000');
   const [playbackState, setPlaybackState] = useState<CustomPlaybackState | null>(null);
@@ -60,42 +60,20 @@ export const MiniPlayer = () => {
     if (!playbackState) return;
 
     (async () => {
-      extend([a11yPlugin]);
-
-      Vibrant.from((playbackState.item as Track).album.images[0].url).getPalette();
-
       Vibrant.from((playbackState.item as Track).album.images[0].url)
         .getPalette()
         .then(palette => {
-          /*if (!palette.Vibrant || !palette.DarkVibrant || !palette.LightVibrant) {
+          if (!palette.Vibrant || !palette.DarkVibrant || !palette.LightVibrant) {
             console.warn('Palette has no swatches');
             return;
           }
 
-          if (!palette.Vibrant.population || !palette.DarkVibrant.population || !palette.LightVibrant.population) {
-            console.warn('Swatches have no population:', palette);
-            return;
-          }*/
+          const hex = getHighestPopulationWithBestContrast(
+            { vibrant: palette.Vibrant, lightVibrant: palette.LightVibrant, darkVibrant: palette.DarkVibrant },
+            '#1db954'
+          );
 
-          const vibrant = palette.Vibrant;
-          const lightVibrant = palette.LightVibrant;
-          const darkVibrant = palette.DarkVibrant;
-
-          const colors = [vibrant, lightVibrant, darkVibrant].sort((a, b) => b!.population - a!.population);
-
-          // Light green album covers may result in insufficient contrast.
-          // Example: https://open.spotify.com/track/38ycERajOuBUKVzbNNQQXh?si=545932658ba14688
-
-          for (const current of colors) {
-            const contrast = colord(current!.hex).contrast('#1db954');
-            console.log(contrast);
-            if (contrast < 7) {
-              continue;
-            }
-            setBackgroundColor(current!.hex);
-            return;
-          }
-          setBackgroundColor(colors[0]!.hex);
+          setBackgroundColor(hex);
         })
         .catch(e => {
           console.error('Error while extracting color from cover:', e);
