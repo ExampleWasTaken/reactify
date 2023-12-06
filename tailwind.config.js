@@ -19,6 +19,9 @@ export default {
       },
       backgroundImage: {
         'aboutUsPattern': "url(/hero/pattern1.svg)"
+      },
+      scale: {
+        active: '0.99'
       }
     },
   },
