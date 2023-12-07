@@ -3,7 +3,6 @@ import { PlaybackProgressInfo, usePlaybackBar } from '../../../../../hooks/usePl
 import { CustomPlaybackState, usePlaybackState } from '../../../../../hooks/usePlaybackState.tsx';
 import { useEffect, useRef, useState } from 'react';
 import { Track } from '@spotify/web-api-ts-sdk';
-import { DeviceIcon } from '../shared/DeviceIcon.tsx';
 import { useArtistArray } from '../../../../../hooks/useArtistArray.tsx';
 import { TitleMarquee } from '../shared/TitleMarquee.tsx';
 import { FaSpotify } from 'react-icons/fa6';
@@ -11,6 +10,7 @@ import { LikedSongHeart } from '../shared/LikedSongHeart.tsx';
 import { PlaybackButton } from '../shared/PlaybackButton.tsx';
 import Vibrant from 'node-vibrant/lib/bundle';
 import { useColorPalette } from '../../../../../hooks/useColorPalette.tsx';
+import { DeviceIcon } from '../shared/device-menu/DeviceIcon.tsx';
 
 export const MiniPlayer = () => {
   const { fetchPlaybackState } = usePlaybackState();
@@ -54,6 +54,7 @@ export const MiniPlayer = () => {
       clearInterval(progressUpdateId);
       clearInterval(playbackUpdateId);
     };
+    //eslint-disable-next-line
   }, [playbackState, lastPlaybackStateFetchTimestamp]);
 
   useEffect(() => {
@@ -79,6 +80,7 @@ export const MiniPlayer = () => {
           console.error('Error while extracting color from cover:', e);
         });
     })();
+    // eslint-disable-next-line
   }, [playbackState]);
 
   if (!playbackState) return null;
@@ -147,7 +149,7 @@ export const MiniPlayer = () => {
               track={playbackState.item as Track}
               liked={playbackState.saved}
             />
-            <DeviceIcon deviceType={playbackState.device.type} />
+            <DeviceIcon device={playbackState.device} />
           </IconContext.Provider>
         </div>
       </div>
