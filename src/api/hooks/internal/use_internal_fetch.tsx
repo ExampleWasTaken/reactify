@@ -1,4 +1,4 @@
-import { RequestMethod, SpotifyResponse } from '../../types/InternalTypes.ts';
+import { RequestMethod } from '../../types/InternalTypes.ts';
 import { use_internal_spotifyAPIContext } from './use_internal_spotifyAPIContext.tsx';
 
 export const use_internal_fetch = () => {
@@ -8,7 +8,7 @@ export const use_internal_fetch = () => {
     url: URL,
     body?: unknown,
     contentType = 'application/json'
-  ): Promise<SpotifyResponse<TReturnType>> => {
+  ): Promise<TReturnType> => {
     try {
       // TODO: get token from useAuth()
       const token = '';
@@ -25,19 +25,16 @@ export const use_internal_fetch = () => {
       const response = await fetch(url, options);
 
       if (response.status === 204) {
-        return null;
+        return null as TReturnType;
       }
 
       await apiContext.validateResponse(response);
 
       const payload = await response.text();
       if (payload.length > 0) {
-        return {
-          headers: response.headers,
-          data: JSON.parse(payload) as TReturnType,
-        };
+        return JSON.parse(payload) as TReturnType;
       }
-      return null;
+      return null as TReturnType;
     } catch (e) {
       throw new Error(
         `Error occurred while performing request to ${url.toString()} ${body ?? 'with body'} ${body ?? body}`
@@ -45,7 +42,7 @@ export const use_internal_fetch = () => {
     }
   };
 
-  const getRequest = async <TReturnType,>(url: URL): Promise<SpotifyResponse<TReturnType>> => {
+  const getRequest = async <TReturnType,>(url: URL): Promise<TReturnType> => {
     return await performRequest<TReturnType>('GET', url);
   };
 
@@ -53,7 +50,7 @@ export const use_internal_fetch = () => {
     url: URL,
     body: TBody,
     contentType = 'application/json'
-  ): Promise<SpotifyResponse<TReturnType>> => {
+  ): Promise<TReturnType> => {
     return await performRequest<TReturnType>('POST', url, body, contentType);
   };
 
@@ -61,7 +58,7 @@ export const use_internal_fetch = () => {
     url: URL,
     body: TBody,
     contentType = 'application/json'
-  ): Promise<SpotifyResponse<TReturnType>> => {
+  ): Promise<TReturnType> => {
     return await performRequest<TReturnType>('PUT', url, body, contentType);
   };
 
@@ -69,7 +66,7 @@ export const use_internal_fetch = () => {
     url: URL,
     body: TBody,
     contentType = 'application/json'
-  ): Promise<SpotifyResponse<TReturnType>> => {
+  ): Promise<TReturnType> => {
     return await performRequest<TReturnType>('DELETE', url, body, contentType);
   };
 

@@ -1,16 +1,18 @@
+import { SearchParamsObject } from './types/InternalTypes.ts';
+
 export class Spotify {
   private readonly _clientId: string;
   private readonly _redirectUrl: URL;
   private readonly _scopes: string[];
 
-  private readonly _baseUrl: string;
+  private readonly baseUrl: string;
 
   constructor(clientId: string, redirectUrl: URL, scopes: string[]) {
     this._clientId = clientId;
     this._redirectUrl = redirectUrl;
     this._scopes = scopes;
 
-    this._baseUrl = 'https://api.spotify.com/v1/';
+    this.baseUrl = 'https://api.spotify.com/v1';
   }
 
   get clientId(): string {
@@ -25,9 +27,6 @@ export class Spotify {
     return this._scopes;
   }
 
-  get baseUrl(): string {
-    return this._baseUrl;
-  }
   public async validateResponse(response: Response): Promise<void> {
     switch (response.status) {
       case 401:
@@ -39,5 +38,35 @@ export class Spotify {
       case 429:
         throw new Error('The app has exceeded its rate limits.');
     }
+  }
+
+  // eslint-disable-next-line
+  public async buildUrl(endpoint: string, params?: SearchParams): Promise<URL> {
+    if (!params) {
+      return new URL(this.baseUrl + endpoint);
+    }
+
+    return new URL(this.baseUrl + endpoint + params?.toString());
+  }
+}
+
+export class SearchParams {
+  private readonly params: SearchParamsObject;
+
+  constructor(params: SearchParamsObject) {
+    this.params = params;
+  }
+
+  public toString(): string {
+    const keys = Object.keys(this.params);
+    const values = Object.values(this.params);
+
+    const string = '';
+    for (let i = 0; i < keys.length; i++) {
+      if (values[i]) {
+        string.concat(`${keys[i]}=${values[i]}&`);
+      }
+    }
+    return string;
   }
 }
