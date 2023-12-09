@@ -3,6 +3,8 @@ import { Album, Market, NewReleases, Page, SavedAlbum, Track } from '@spotify/we
 import { use_internal_fetch } from './internal/use_internal_fetch.tsx';
 import { SearchParams } from '../Spotify.ts';
 
+// TODO: change limits to type MaxInt<number>
+
 export const useAlbums = () => {
   const api = use_internal_spotifyAPIContext();
   const { deleteRequest, getRequest, putRequest } = use_internal_fetch();

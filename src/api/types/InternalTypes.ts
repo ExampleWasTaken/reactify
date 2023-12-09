@@ -1,6 +1,6 @@
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export type SearchParamsObject = Record<string, string | undefined>;
+export type SearchParamsObject = Record<string, string | number | undefined>;
 
 export interface AuthorizationResponse {
   code: string;
@@ -22,3 +22,6 @@ export interface TokenRefreshResponse {
   refresh_token: string;
   scope: string;
 }
+
+// Our own API types
+export type ArtistAlbumsIncludeGroup = 'album' | 'single' | 'appears_on' | 'compilation';
