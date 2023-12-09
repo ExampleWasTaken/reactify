@@ -6,7 +6,7 @@ import { SearchParams } from '../Spotify.ts';
 // TODO: change limits to type MaxInt<number>
 
 export const useAlbums = () => {
-  const api = use_internal_spotifyAPIContext();
+  const { buildUrl } = use_internal_spotifyAPIContext();
   const { deleteRequest, getRequest, putRequest } = use_internal_fetch();
 
   /**
@@ -18,7 +18,7 @@ export const useAlbums = () => {
    * Users can view the country that is associated with their account in the account settings.*
    */
   const getAlbum = async (id: string, market?: Market): Promise<Album> => {
-    const url = await api.buildUrl(`/albums/${id}`, new SearchParams({ market: market }));
+    const url = await buildUrl(`/albums/${id}`, new SearchParams({ market: market }));
 
     return await getRequest<Album>(url);
   };
@@ -36,7 +36,7 @@ export const useAlbums = () => {
       throw new Error('Max album count per request (20) exceeded.');
     }
 
-    const url = await api.buildUrl('/albums', new SearchParams({ ids: ids.join(','), market: market }));
+    const url = await buildUrl('/albums', new SearchParams({ ids: ids.join(','), market: market }));
 
     return await getRequest<Album[]>(url);
   };
@@ -52,7 +52,7 @@ export const useAlbums = () => {
    * @param offset The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.
    */
   const getAlbumTracks = async (id: string, market?: Market, limit?: string, offset?: string) => {
-    const url = await api.buildUrl(`/albums/${id}/tracks`, new SearchParams({ market, limit, offset }));
+    const url = await buildUrl(`/albums/${id}/tracks`, new SearchParams({ market, limit, offset }));
 
     return await getRequest<Page<Track>>(url);
   };
@@ -67,7 +67,7 @@ export const useAlbums = () => {
    * Users can view the country that is associated with their account in the account settings.*
    */
   const getUsersSavedAlbums = async (limit?: string, offset?: string, market?: Market) => {
-    const url = await api.buildUrl('/me/albums', new SearchParams({ limit, offset, market }));
+    const url = await buildUrl('/me/albums', new SearchParams({ limit, offset, market }));
 
     return await getRequest<Page<SavedAlbum>>(url);
   };
@@ -81,7 +81,7 @@ export const useAlbums = () => {
       throw new Error('Max album count per request (20) exceeded.');
     }
 
-    const url = await api.buildUrl('/me/albums', new SearchParams({ ids: ids.join(',') }));
+    const url = await buildUrl('/me/albums', new SearchParams({ ids: ids.join(',') }));
 
     await putRequest<void, string>(url, JSON.stringify(ids));
   };
@@ -95,7 +95,7 @@ export const useAlbums = () => {
       throw new Error('Max album count per request (20) exceeded.');
     }
 
-    const url = await api.buildUrl('/me/albums', new SearchParams({ ids: ids.join(',') }));
+    const url = await buildUrl('/me/albums', new SearchParams({ ids: ids.join(',') }));
 
     await deleteRequest<void, string>(url, JSON.stringify(ids));
   };
@@ -109,7 +109,7 @@ export const useAlbums = () => {
       throw new Error('Max album count per request (20) exceeded.');
     }
 
-    const url = await api.buildUrl('/me/albums', new SearchParams({ ids: ids.join(',') }));
+    const url = await buildUrl('/me/albums', new SearchParams({ ids: ids.join(',') }));
 
     return await getRequest<boolean[]>(url);
   };
@@ -121,7 +121,7 @@ export const useAlbums = () => {
    * @param offset The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.
    */
   const getNewReleases = async (country?: string, limit?: string, offset?: string) => {
-    const url = await api.buildUrl('/browse/new-releases', new SearchParams({ country, limit, offset }));
+    const url = await buildUrl('/browse/new-releases', new SearchParams({ country, limit, offset }));
 
     return await getRequest<NewReleases>(url);
   };

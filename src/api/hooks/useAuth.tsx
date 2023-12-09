@@ -4,8 +4,7 @@ import { AccessToken } from '@spotify/web-api-ts-sdk';
 import { AccessTokenResponse } from '../types/InternalTypes.ts';
 
 export const useAuth = () => {
-  const api = use_internal_spotifyAPIContext();
-
+  const { clientId, redirectUrl, scopes } = use_internal_spotifyAPIContext();
   const authUrl = new URL('https://accounts.spotify.com/authorize');
 
   const generateRandomString = (length: number) => {
@@ -49,7 +48,7 @@ export const useAuth = () => {
     const params = {
       grant_type: 'refresh_token',
       refresh_token: refreshToken,
-      client_id: api.clientId,
+      client_id: clientId,
     };
 
     const payload = {
@@ -63,8 +62,7 @@ export const useAuth = () => {
     const response = await fetch(url, payload);
 
     if (response.status !== 200) {
-      console.error('Token refresh failed:', response);
-      return;
+      console.error('Token refresh fail');
     }
 
     const body = await response.json();
@@ -90,11 +88,11 @@ export const useAuth = () => {
     localStorage.setItem('reactify:auth_state', state);
 
     const params = {
-      client_id: api.clientId,
+      client_id: clientId,
       response_type: 'code',
-      redirect_uri: api.redirectUrl.toString(),
+      redirect_uri: redirectUrl.toString(),
       state,
-      scope: api.scopes.join(' '),
+      scope: scopes.join(' '),
       code_challenge_method: 'S256',
       code_challenge: codeChallenge,
     };
@@ -135,8 +133,8 @@ export const useAuth = () => {
     const params = {
       grant_type: 'authorization_code',
       code,
-      redirect_uri: api.redirectUrl.toString(),
-      client_id: api.clientId,
+      redirect_uri: redirectUrl.toString(),
+      client_id: clientId,
       code_verifier: codeVerifier,
     };
 

@@ -5,7 +5,7 @@ import { SearchParams } from '../Spotify.ts';
 import { ArtistAlbumsIncludeGroup } from '../types/InternalTypes.ts';
 
 export const useArtists = () => {
-  const api = use_internal_spotifyAPIContext();
+  const { buildUrl } = use_internal_spotifyAPIContext();
   const { getRequest } = use_internal_fetch();
 
   /**
@@ -13,7 +13,7 @@ export const useArtists = () => {
    * @param id The Spotify ID of the artist.
    */
   const getArtist = async (id: string) => {
-    const url = await api.buildUrl(`/artists/${id}`);
+    const url = await buildUrl(`/artists/${id}`);
 
     return await getRequest<Artist>(url);
   };
@@ -23,7 +23,7 @@ export const useArtists = () => {
    * @param ids An array containing the Spotify IDs for the artists. Maximum: 50 IDs.
    */
   const getArtists = async (ids: string[]) => {
-    const url = await api.buildUrl('/artists', new SearchParams({ ids: ids.join(',') }));
+    const url = await buildUrl('/artists', new SearchParams({ ids: ids.join(',') }));
 
     return getRequest<Artist[]>(url);
   };
@@ -46,7 +46,7 @@ export const useArtists = () => {
     limit?: MaxInt<50>,
     offset?: number
   ) => {
-    const url = await api.buildUrl(
+    const url = await buildUrl(
       `/artists/${id}/albums`,
       new SearchParams({
         include_groups: include_groups?.join(','),
@@ -68,7 +68,7 @@ export const useArtists = () => {
    * Users can view the country that is associated with their account in the account settings.*
    */
   const getTopTracks = async (id: string, market: Market) => {
-    const url = await api.buildUrl(`/artists/${id}/top-tracks`, new SearchParams({ market }));
+    const url = await buildUrl(`/artists/${id}/top-tracks`, new SearchParams({ market }));
 
     return await getRequest<TopTracksResult>(url);
   };
@@ -78,7 +78,7 @@ export const useArtists = () => {
    * @param id The Spotify ID of the artist.
    */
   const getRelatedArtists = async (id: string) => {
-    const url = await api.buildUrl(`/artists/${id}/related-artists`);
+    const url = await buildUrl(`/artists/${id}/related-artists`);
 
     return getRequest<Page<Artist>>(url);
   };
