@@ -22,7 +22,7 @@ export const usePlaybackBar = () => {
 
     const adjustedProgress_ms = progress_ms + (currentTimestamp - timestamp_ms);
     const timeRemaining_ms = Math.round(duration_ms - adjustedProgress_ms);
-    const progressPercentage = (adjustedProgress_ms / duration_ms) * 100;
+    const progressPercentage = Math.min((adjustedProgress_ms / duration_ms) * 100, 100);
     return { adjustedProgress_ms, timeRemaining_ms, progressPercentage };
   };
 
