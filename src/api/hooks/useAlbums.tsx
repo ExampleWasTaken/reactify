@@ -1,5 +1,5 @@
 import { use_internal_spotifyAPIContext } from './internal/use_internal_spotifyAPIContext.tsx';
-import { Album, Market, NewReleases, Page, SavedAlbum, Track } from '@spotify/web-api-ts-sdk';
+import { Album, CountryCodeA2, Market, NewReleases, Page, SavedAlbum, Track } from '@spotify/web-api-ts-sdk';
 import { use_internal_fetch } from './internal/use_internal_fetch.tsx';
 import { SearchParams } from '../Spotify.ts';
 
@@ -120,7 +120,7 @@ export const useAlbums = () => {
    * @param limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
    * @param offset The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.
    */
-  const getNewReleases = async (country?: string, limit?: string, offset?: string) => {
+  const getNewReleases = async (country?: CountryCodeA2, limit?: string, offset?: string) => {
     const url = await buildUrl('/browse/new-releases', new SearchParams({ country, limit, offset }));
 
     return await getRequest<NewReleases>(url);

@@ -9,7 +9,7 @@ export const useCategories = () => {
 
   /**
    * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
-   * @param id The Spotify category ID for the category.
+   * @param category_id The Spotify category ID for the category.
    * @param country A country: an ISO 3166-1 alpha-2 country code. Provide this parameter to ensure that the category exists for a particular country.
    * @param local The desired language, consisting of an ISO 639-1 language code and an ISO 3166-1 alpha-2 country code,<br>
    * joined by an underscore. For example: es_MX, meaning "Spanish (Mexico)". Provide this parameter if you want the category<br>
@@ -19,8 +19,8 @@ export const useCategories = () => {
    * give odd results if not carefully matched. For example country=SE&locale=de_DE will return a list of categories relevant<br>
    * to Sweden but as German language strings.*
    */
-  const getBrowseCategory = async (id: string, country?: CountryCodeA2, local?: string) => {
-    const url = await buildUrl(`/browse/categories/${id}`, new SearchParams({ country, local }));
+  const getBrowseCategory = async (category_id: string, country?: CountryCodeA2, local?: string) => {
+    const url = await buildUrl(`/browse/categories/${category_id}`, new SearchParams({ country, local }));
 
     return await getRequest<Category>(url);
   };
