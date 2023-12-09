@@ -6,6 +6,9 @@ export const useGenres = () => {
   const { buildUrl } = use_internal_spotifyAPIContext();
   const { getRequest } = use_internal_fetch();
 
+  /**
+   * Retrieve a list of available genres seed parameter values for recommendations.
+   */
   const getAvailableGenreSeeds = async () => {
     const url = await buildUrl('/recommendations/available-genre-seeds');
 
