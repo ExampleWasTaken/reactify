@@ -1,8 +1,13 @@
 import { RequestMethod } from '../../types/InternalTypes.ts';
 import { use_internal_spotifyAPIContext } from './use_internal_spotifyAPIContext.tsx';
+import { useAuth } from '../useAuth.tsx';
 
 export const use_internal_fetch = () => {
   const apiContext = use_internal_spotifyAPIContext();
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { getAccessToken } = useAuth();
+
   const performRequest = async <TReturnType,>(
     method: RequestMethod,
     url: URL,
@@ -10,8 +15,12 @@ export const use_internal_fetch = () => {
     contentType = 'application/json'
   ): Promise<TReturnType> => {
     try {
-      // TODO: get token from useAuth()
-      const token = '';
+      const token = getAccessToken();
+
+      if (!token) {
+        console.error('No access token found. Cannot perform request.');
+        return null as TReturnType;
+      }
 
       const options: RequestInit = {
         method: method,
