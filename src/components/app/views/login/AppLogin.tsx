@@ -13,9 +13,7 @@ export const AppLogin = () => {
   // Indicates the authentication is in progress and has not yet finished.
   const [authenticating, setAuthenticating] = useState(false);
 
-  const loginHandler = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const loginHandler = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
 
     setAuthenticating(true);
@@ -55,7 +53,7 @@ export const AppLogin = () => {
         <img
           className="h-[70px]"
           src={publicAssets.spotifyLogoGreen}
-          alt="Spotify logo"
+          alt="_Spotify logo"
         />
       </section>
       <main className="mb-10 flex flex-col justify-end items-center">
@@ -67,16 +65,11 @@ export const AppLogin = () => {
           Login
         </PrimaryButton>
         <section className="px-10 text-[#ccc] flex flex-col items-center">
-          <p className="text-center">
-            Reactify is not associated with Spotify AB.
-          </p>
+          <p className="text-center">Reactify is not associated with _Spotify AB.</p>
           <p className="text-center">
             {/* TODO: change to own T&C */}
             By using the service you agree to the{' '}
-            <a href="https://www.spotify.com/us/legal/">
-              Terms&nbsp;and&nbsp;Conditions
-            </a>
-            .
+            <a href="https://www.spotify.com/us/legal/">Terms&nbsp;and&nbsp;Conditions</a>.
           </p>
         </section>
       </main>

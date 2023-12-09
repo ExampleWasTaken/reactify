@@ -12,19 +12,16 @@ export const About = () => {
           <section>
             <h2>Reactify</h2>
             <p>
-              Reactify is a Spotify client built using web technologies. It is
-              optimized for mobile usage and to be used as installed PWA.
+              Reactify is a Spotify client built using web technologies. It is optimized for mobile usage and to be used
+              as installed PWA.
             </p>
           </section>
           <section>
             <h3>Why?</h3>
+            <p>The main purpose of this project is to get more comfortable with handling advanced APIs.</p>
             <p>
-              The main purpose of this project is to get more comfortable with
-              handling advanced APIs.
-            </p>
-            <p>
-              The reason I chose Spotify is because it offers a great amount of
-              content that requires advanced UIs and API handling.
+              The reason I chose Spotify is because it offers a great amount of content that requires advanced UIs and
+              API handling.
             </p>
           </section>
         </div>

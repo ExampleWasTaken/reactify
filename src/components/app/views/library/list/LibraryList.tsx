@@ -1,6 +1,6 @@
 import { LibraryItem } from './LibraryItem.tsx';
 import { useEffect, useState } from 'react';
-import { Spotify } from '../../../../../api/Spotify.ts';
+import { _Spotify } from '../../../../../api/_Spotify.ts';
 import { ContainerSpinner } from '../../../global/loaders/ContainerSpinner.tsx';
 import { useSpotify } from '../../../../../hooks/useSpotify.tsx';
 import { publicAssets } from '../../../../../utils/publicAssets.ts';
@@ -17,7 +17,7 @@ interface LibraryListObject {
 }
 
 const fetchLibrary = async (): Promise<LibraryListObject[]> => {
-  const sdk = Spotify.getInstance().sdk;
+  const sdk = _Spotify.getInstance().sdk;
 
   const savedPlaylists = await sdk.currentUser.playlists.playlists();
   const savedAlbums = await sdk.currentUser.albums.savedAlbums();

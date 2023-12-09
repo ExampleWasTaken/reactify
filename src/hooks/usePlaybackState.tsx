@@ -1,5 +1,5 @@
 import { Market, PlaybackState } from '@spotify/web-api-ts-sdk';
-import { Spotify } from '../api/Spotify.ts';
+import { _Spotify } from '../api/_Spotify.ts';
 import { toast } from 'react-hot-toast';
 
 /**
@@ -20,7 +20,7 @@ export const usePlaybackState = () => {
     market?: Market | undefined,
     additional_types?: string | undefined
   ): Promise<CustomPlaybackState | null> => {
-    const sdk = Spotify.getInstance().sdk;
+    const sdk = _Spotify.getInstance().sdk;
 
     try {
       const state = await sdk.player.getPlaybackState(market, additional_types);
@@ -43,7 +43,7 @@ export const usePlaybackState = () => {
     offset?: object,
     positionMs?: number
   ) => {
-    const sdk = Spotify.getInstance().sdk;
+    const sdk = _Spotify.getInstance().sdk;
 
     // FIXME: does not respect caching -> always tries to start playback regardless of user subscription
 
@@ -55,7 +55,7 @@ export const usePlaybackState = () => {
   };
 
   const pausePlayback = async (device_id: string) => {
-    const sdk = Spotify.getInstance().sdk;
+    const sdk = _Spotify.getInstance().sdk;
 
     // FIXME: does not respect caching -> always tries to pause playback regardless of user subscription
 

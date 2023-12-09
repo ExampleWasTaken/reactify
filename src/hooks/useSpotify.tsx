@@ -1,5 +1,5 @@
-import { Spotify } from '../api/Spotify.ts';
+import { _Spotify } from '../api/_Spotify.ts';
 
 export const useSpotify = () => {
-  return Spotify.getInstance();
+  return _Spotify.getInstance();
 };
