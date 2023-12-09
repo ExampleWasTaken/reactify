@@ -1,38 +1,43 @@
-import { AuthorizationCodeWithPKCEStrategy, SpotifyApi } from '@spotify/web-api-ts-sdk';
-
-const CLIENT_ID = '5ca64c0a829949428154075795560d0d';
-const REDIRECT_URL = 'https://localhost:5173/app/authflow';
-const SCOPE = [
-  'user-read-playback-state',
-  'user-modify-playback-state',
-  'user-read-currently-playing',
-  'streaming',
-  'playlist-read-private',
-  'playlist-read-collaborative',
-  'playlist-modify-private',
-  'playlist-modify-public',
-  'user-follow-modify',
-  'user-follow-read',
-  'user-read-playback-position',
-  'user-top-read',
-  'user-read-recently-played',
-  'user-library-modify',
-  'user-library-read',
-  'user-read-email',
-  'user-read-private',
-];
-
 export class Spotify {
-  private static instance: Spotify;
-  private auth = new AuthorizationCodeWithPKCEStrategy(CLIENT_ID, REDIRECT_URL, SCOPE);
-  private _sdk = new SpotifyApi(this.auth);
+  private readonly _clientId: string;
+  private readonly _redirectUrl: URL;
+  private readonly _scopes: string[];
 
-  public get sdk(): SpotifyApi {
-    return this._sdk;
+  private readonly _baseUrl: string;
+
+  constructor(clientId: string, redirectUrl: URL, scopes: string[]) {
+    this._clientId = clientId;
+    this._redirectUrl = redirectUrl;
+    this._scopes = scopes;
+
+    this._baseUrl = 'https://api.spotify.com/v1/';
   }
 
-  public static getInstance(): Spotify {
-    if (!this.instance) this.instance = new Spotify();
-    return this.instance;
+  get clientId(): string {
+    return this._clientId;
+  }
+
+  get redirectUrl(): URL {
+    return this._redirectUrl;
+  }
+
+  get scopes(): string[] {
+    return this._scopes;
+  }
+
+  get baseUrl(): string {
+    return this._baseUrl;
+  }
+  public async validateResponse(response: Response): Promise<void> {
+    switch (response.status) {
+      case 401:
+        throw new Error(
+          'Bad or expired token. The user may have revoked the token or the token as expired. Try re-authenticating the user.'
+        );
+      case 403:
+        throw new Error('Bad OAuth request');
+      case 429:
+        throw new Error('The app has exceeded its rate limits.');
+    }
   }
 }
