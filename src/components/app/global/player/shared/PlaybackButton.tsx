@@ -1,10 +1,10 @@
 import { PlaybackState } from '@spotify/web-api-ts-sdk';
 import { IconContext } from 'react-icons';
 import { IoIosPause, IoIosPlay } from 'react-icons/io';
-import { usePlaybackState } from '../../../../../hooks/usePlaybackState.tsx';
 import { toast } from 'react-hot-toast';
 import { useState } from 'react';
 
+// TODO: port to own api handling
 interface PlaybackButtonProps {
   playbackState: PlaybackState;
   size: number;
@@ -14,8 +14,6 @@ interface PlaybackButtonProps {
 const TOAST_OPTS = { id: 'playback_error' };
 
 export const PlaybackButton = ({ playbackState, size, className }: PlaybackButtonProps) => {
-  const { startOrResumePlayback, pausePlayback } = usePlaybackState();
-
   const [playingBack, setPlayingBack] = useState(playbackState.is_playing);
 
   const onPlay = () => {
@@ -32,7 +30,7 @@ export const PlaybackButton = ({ playbackState, size, className }: PlaybackButto
     }
 
     setPlayingBack(true);
-    startOrResumePlayback(deviceId).catch(() => setPlayingBack(false));
+    // startOrResumePlayback(deviceId).catch(() => setPlayingBack(false));
   };
 
   const onPause = () => {
@@ -49,7 +47,7 @@ export const PlaybackButton = ({ playbackState, size, className }: PlaybackButto
     }
 
     setPlayingBack(false);
-    pausePlayback(deviceId).catch(() => setPlayingBack(true));
+    // pausePlayback(deviceId).catch(() => setPlayingBack(true));
   };
 
   return (

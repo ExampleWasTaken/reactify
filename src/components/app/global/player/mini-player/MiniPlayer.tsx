@@ -1,8 +1,7 @@
 import { IconContext } from 'react-icons';
 import { PlaybackProgressInfo, usePlaybackBar } from '../../../../../hooks/usePlaybackBar.tsx';
-import { CustomPlaybackState, usePlaybackState } from '../../../../../hooks/usePlaybackState.tsx';
 import { useEffect, useRef, useState } from 'react';
-import { Track } from '@spotify/web-api-ts-sdk';
+import { PlaybackState, Track } from '@spotify/web-api-ts-sdk';
 import { useArtistArray } from '../../../../../hooks/useArtistArray.tsx';
 import { TitleMarquee } from '../shared/TitleMarquee.tsx';
 import { FaSpotify } from 'react-icons/fa6';
@@ -11,32 +10,31 @@ import { PlaybackButton } from '../shared/PlaybackButton.tsx';
 import Vibrant from 'node-vibrant/lib/bundle';
 import { useColorPalette } from '../../../../../hooks/useColorPalette.tsx';
 import { DeviceIcon } from '../shared/device-menu/DeviceIcon.tsx';
-
+// TODO: port to own api handling
 export const MiniPlayer = () => {
-  const { fetchPlaybackState } = usePlaybackState();
   const { calcProgress } = usePlaybackBar();
   const { formatArtists } = useArtistArray();
   const { getHighestPopulationWithBestContrast } = useColorPalette();
 
   const [backgroundColor, setBackgroundColor] = useState('#191414');
-  const [playbackState, setPlaybackState] = useState<CustomPlaybackState | null>(null);
+  const [playbackState, _setPlaybackState] = useState<PlaybackState | null>(null);
 
   // This is needed as the API returns a cached value that is only updated once the playback state has changed.
   // This means that the progress value is not synchronized to the returned timestamp. Therefore, we must keep track of the timestamp ourselves.
-  const [lastPlaybackStateFetchTimestamp, setLastPlaybackStateFetchTimestamp] = useState(0);
+  const [lastPlaybackStateFetchTimestamp, _setLastPlaybackStateFetchTimestamp] = useState(0);
   const [progress, setProgress] = useState<PlaybackProgressInfo | null>(null);
 
   const playerTrackDetailsRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const playbackUpdateId = setInterval(() => {
-      fetchPlaybackState()
-        .then(state => {
-          // console.log('Updating playback state:', state);
-          setPlaybackState(state);
-          setLastPlaybackStateFetchTimestamp(Date.now());
-        })
-        .catch(() => setPlaybackState(null));
+      // fetchPlaybackState()
+      //   .then(state => {
+      //     // console.log('Updating playback state:', state);
+      //     setPlaybackState(state);
+      //     setLastPlaybackStateFetchTimestamp(Date.now());
+      //   })
+      //   .catch(() => setPlaybackState(null));
     }, 1000);
 
     const progressUpdateId = setInterval(() => {
@@ -147,7 +145,7 @@ export const MiniPlayer = () => {
             <LikedSongHeart
               size={25}
               track={playbackState.item as Track}
-              liked={playbackState.saved}
+              liked={true} // FIXME: use actual state -> requires extra request to check if song is in saved tracks
             />
             <DeviceIcon device={playbackState.device} />
           </IconContext.Provider>

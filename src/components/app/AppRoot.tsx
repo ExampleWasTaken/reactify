@@ -1,30 +1,31 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { routes } from '../../utils/routes.ts';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { AppFooter } from './global/footer/AppFooter.tsx';
-import { useSpotify } from '../../hooks/useSpotify.tsx';
 import { Toaster } from 'react-hot-toast';
+import { useAuth } from '../../api/hooks/useAuth.tsx';
 
 export const AppRoot = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const spotify = useSpotify();
+  const { getAccessToken } = useAuth();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_accessToken, setAccessToken] = useState('');
+  const checkLoginStatus = () => {
+    const at = getAccessToken();
+    if (!at) {
+      navigate(routes.app.login);
+    } else {
+      console.log(at);
+    }
+  };
 
   useEffect(() => {
     if (location.pathname.endsWith('app/') || location.pathname.endsWith('app')) {
       navigate(routes.app.home);
     }
 
-    spotify.sdk.getAccessToken().then(result => {
-      if (result === null) {
-        spotify.sdk.authenticate().then(r => r);
-      }
-      result && setAccessToken(result.access_token);
-    });
-  }, [navigate, location, spotify]);
+    checkLoginStatus();
+  }, [navigate, location]);
 
   return (
     <div

@@ -3,7 +3,6 @@ import { Device, Devices } from '@spotify/web-api-ts-sdk';
 import { CgClose } from 'react-icons/cg';
 import { IconContext } from 'react-icons';
 import { TbDeviceLaptop, TbDeviceMobile, TbDevices2, TbDeviceSpeaker } from 'react-icons/tb';
-import { useDevices } from '../../../../../../hooks/useDevices.tsx';
 import { toast } from 'react-hot-toast';
 
 interface MenuProps {
@@ -12,15 +11,12 @@ interface MenuProps {
 }
 
 export const Menu = ({ currentDevice, closeHandler }: MenuProps) => {
-  const { fetchAvailableDevices, transferPlayback } = useDevices();
-  const [availableDevices, setAvailableDevices] = useState<Devices | null>(null);
+  const [availableDevices, _setAvailableDevices] = useState<Devices | null>(null);
 
   useEffect(() => {
-    fetchAvailableDevices()
-      .then(devices => setAvailableDevices(devices))
-      .catch(e => console.error('Error while fetching devices:', e));
+    // TODO: fetch devices
 
-    const id = setInterval(fetchAvailableDevices, 5000);
+    const id = setInterval(() => {}, 5000);
 
     return () => {
       clearInterval(id);
@@ -59,7 +55,7 @@ export const Menu = ({ currentDevice, closeHandler }: MenuProps) => {
                     if (current.id) {
                       try {
                         closeHandler();
-                        await transferPlayback([current.id]);
+                        // FIXME: handle playback transfer here
                       } catch (e) {
                         toast.error('Could not transfer playback');
                         console.error('Error while transferring playback:', e);
@@ -85,6 +81,7 @@ export const Menu = ({ currentDevice, closeHandler }: MenuProps) => {
 interface IconProps {
   device: Device;
 }
+
 export const Icon = ({ device }: IconProps) => {
   return (
     <>

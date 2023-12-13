@@ -1,41 +1,16 @@
 import { publicAssets } from '../../../../utils/publicAssets.ts';
 import { PrimaryButton } from '../../../shared/PrimaryButton.tsx';
-import React, { useState } from 'react';
-import { useSpotify } from '../../../../hooks/useSpotify.tsx';
-import { useNavigate } from 'react-router-dom';
-import { routes } from '../../../../utils/routes.ts';
-import { toast, Toaster } from 'react-hot-toast';
+import React from 'react';
+import { Toaster } from 'react-hot-toast';
+import { useAuth } from '../../../../api/hooks/useAuth.tsx';
 
 export const AppLogin = () => {
-  const spotify = useSpotify();
-  const navigate = useNavigate();
-
-  // Indicates the authentication is in progress and has not yet finished.
-  const [authenticating, setAuthenticating] = useState(false);
+  const { requestAuthorization } = useAuth();
 
   const loginHandler = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-
-    setAuthenticating(true);
-    const result = await spotify.sdk.authenticate();
-
-    if (result.authenticated) {
-      navigate(routes.app.home);
-      setAuthenticating(false);
-    } else {
-      toast.error('Something went wrong!', {
-        position: 'bottom-center',
-        style: {
-          background: '#e91429',
-          color: '#fff',
-          border: '1px solid #fff',
-        },
-      });
-      setAuthenticating(false);
-    }
+    await requestAuthorization();
   };
-
-  if (authenticating) return <h1>Loading...</h1>;
 
   return (
     <div
@@ -65,7 +40,7 @@ export const AppLogin = () => {
           Login
         </PrimaryButton>
         <section className="px-10 text-[#ccc] flex flex-col items-center">
-          <p className="text-center">Reactify is not associated with _Spotify AB.</p>
+          <p className="text-center">Reactify is not associated with Spotify AB.</p>
           <p className="text-center">
             {/* TODO: change to own T&C */}
             By using the service you agree to the{' '}

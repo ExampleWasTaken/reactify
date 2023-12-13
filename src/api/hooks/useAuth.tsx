@@ -1,6 +1,5 @@
 import { use_internal_spotifyAPIContext } from './internal/use_internal_spotifyAPIContext.tsx';
 import { AccessToken } from '@spotify/web-api-ts-sdk';
-import { AccessTokenResponse } from '../types/InternalTypes.ts';
 
 export const useAuth = () => {
   const { clientId, redirectUrl, scopes } = use_internal_spotifyAPIContext();
@@ -129,6 +128,8 @@ export const useAuth = () => {
     }
 
     // Response is valid -> request token
+    const url = 'https://accounts.spotify.com/api/token';
+
     const params = {
       grant_type: 'authorization_code',
       code,
@@ -137,7 +138,7 @@ export const useAuth = () => {
       code_verifier: codeVerifier,
     };
 
-    const payload = {
+    const payload: RequestInit = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -145,8 +146,18 @@ export const useAuth = () => {
       body: new URLSearchParams(params),
     };
 
-    const response = await fetch(authUrl, payload);
-    const body = (await response.json()) as AccessTokenResponse;
+    const response = await fetch(url, payload);
+
+    // Log the response status and headers
+    console.log('Response Status:', response.status);
+    console.log('Response Headers:', response.headers);
+
+    const body = await response.json();
+
+    // Log the response body
+    console.log('Response Body:', body);
+
+    // const body = (await response.json()) as AccessTokenResponse;
 
     const accessToken: AccessToken = {
       access_token: body.access_token,
