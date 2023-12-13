@@ -192,7 +192,7 @@ export const usePlaylists = () => {
    * @param offset 'The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100.000.
    * Use with limit to get the next set of playlists.'
    */
-  const getCurrentUsersPlaylists = async (limit?: number, offset?: number) => {
+  const getCurrentUsersPlaylists = async (limit?: MaxInt<50>, offset?: number) => {
     const url = await buildUrl('/me/playlists', new SearchParams({ limit, offset }));
 
     return await getRequest<Page<SimplifiedPlaylist>>(url);
@@ -205,7 +205,7 @@ export const usePlaylists = () => {
    * @param offset The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100.000.
    * Use with limit to get the next set of playlists.
    */
-  const getUsersPlaylists = async (user_id: string, limit?: number, offset?: number) => {
+  const getUsersPlaylists = async (user_id: string, limit?: MaxInt<50>, offset?: number) => {
     const url = await buildUrl(`/users/${user_id}/playlists`, new SearchParams({ limit, offset }));
 
     return await getRequest<Page<Playlist>>(url);
@@ -255,7 +255,7 @@ export const usePlaylists = () => {
     country?: CountryCodeA2,
     locale?: string,
     timestamp?: string,
-    limit?: number,
+    limit?: MaxInt<50>,
     offset?: number
   ) => {
     const url = await buildUrl(
@@ -272,10 +272,17 @@ export const usePlaylists = () => {
     return await getRequest<FeaturedPlaylists>(url);
   };
 
+  /**
+   * Get a list of Spotify playlists tagged with a particular category.
+   * @param category_id The Spotify category ID for the category.
+   * @param country A country: an ISO 3166-1 alpha-2 country code. Provide this parameter to ensure that the category exists for a particular country.
+   * @param limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
+   * @param offset The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.
+   */
   const getCategoryPlaylists = async (
     category_id: string,
     country?: CountryCodeA2,
-    limit?: number,
+    limit?: MaxInt<50>,
     offset?: number
   ) => {
     const url = await buildUrl(
