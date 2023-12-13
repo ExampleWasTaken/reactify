@@ -1,5 +1,4 @@
 import { use_internal_spotifyAPIContext } from './internal/use_internal_spotifyAPIContext.tsx';
-import { randomUUID } from 'crypto';
 import { AccessToken } from '@spotify/web-api-ts-sdk';
 import { AccessTokenResponse } from '../types/InternalTypes.ts';
 
@@ -27,7 +26,7 @@ export const useAuth = () => {
   };
 
   const generateState = () => {
-    return randomUUID().toString();
+    return window.crypto.randomUUID().toString();
   };
 
   const validateState = (state: string) => {
