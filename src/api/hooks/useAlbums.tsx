@@ -132,7 +132,7 @@ export const useAlbums = () => {
     getAlbumTracks,
     getUsersSavedAlbums,
     saveAlbumsForCurrentUser,
-    deleteAlbumsForCurrentUser,
+    removeAlbumsForCurrentUser: deleteAlbumsForCurrentUser,
     checkUsersSavedAlbums,
     getNewReleases,
   };

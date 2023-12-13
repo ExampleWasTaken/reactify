@@ -2,8 +2,18 @@ import { use_internal_spotifyAPIContext } from './internal/use_internal_spotifyA
 import { use_internal_fetch } from './internal/use_internal_fetch.tsx';
 import { Artist, FollowedArtists, MaxInt, Page, Track, UserProfile } from '@spotify/web-api-ts-sdk';
 import { SearchParams } from '../Spotify.ts';
+import { useAlbums } from './useAlbums.tsx';
+import { usePlayer } from './usePlayer.tsx';
+import { usePlaylists } from './usePlaylists.tsx';
+import { useTracks } from './useTracks.tsx';
 
 export const useCurrentUser = () => {
+  const { getCurrentUsersPlaylists } = usePlaylists();
+  const player = usePlayer();
+  const { getSavedTracks, saveTracks, removeSavedTracks, isSaved } = useTracks();
+  const { getUsersSavedAlbums, saveAlbumsForCurrentUser, removeAlbumsForCurrentUser, checkUsersSavedAlbums } =
+    useAlbums();
+
   const { buildUrl } = use_internal_spotifyAPIContext();
   const { deleteRequest, getRequest, putRequest } = use_internal_fetch();
 
@@ -123,5 +133,15 @@ export const useCurrentUser = () => {
     followPerson,
     unfollowPerson,
     isFollowingPerson,
+    getSavedTracks,
+    saveTracks,
+    removeSavedTracks,
+    checkTrackSaved: isSaved,
+    getPlaylists: getCurrentUsersPlaylists,
+    getSavedAlbums: getUsersSavedAlbums,
+    saveAlbums: saveAlbumsForCurrentUser,
+    removeSavedAlbums: removeAlbumsForCurrentUser,
+    checkAlbumsSaved: checkUsersSavedAlbums,
+    ...player,
   };
 };

@@ -159,7 +159,7 @@ export const useTracks = () => {
     getTracks,
     getSavedTracks,
     saveTracks,
-    removeTracks,
+    removeSavedTracks: removeTracks,
     isSaved,
     getTracksAudioFeatures,
     getTrackAudioFeatures,
