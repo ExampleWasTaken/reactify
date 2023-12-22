@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import { Spotify } from '../Spotify.ts';
 import { SpotifyAPIContext } from '../context/SpotifyAPIContext.ts';
 
@@ -10,9 +10,7 @@ interface SpotifyWebAPIProps {
 }
 
 export const SpotifyWebAPI = ({ clientId, redirectUrl, scopes, children }: SpotifyWebAPIProps) => {
-  return (
-    <SpotifyAPIContext.Provider value={new Spotify(clientId, redirectUrl, scopes)}>
-      {children}
-    </SpotifyAPIContext.Provider>
-  );
+  const spotify = useRef<Spotify>(new Spotify(clientId, redirectUrl, scopes));
+
+  return <SpotifyAPIContext.Provider value={spotify.current}>{children}</SpotifyAPIContext.Provider>;
 };

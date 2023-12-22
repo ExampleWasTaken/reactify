@@ -2,7 +2,7 @@ import { use_internal_spotifyAPIContext } from './internal/use_internal_spotifyA
 import { AccessToken } from '@spotify/web-api-ts-sdk';
 
 export const useAuth = () => {
-  const { clientId, redirectUrl, scopes } = use_internal_spotifyAPIContext();
+  const spotify = use_internal_spotifyAPIContext();
   const authUrl = new URL('https://accounts.spotify.com/authorize');
 
   const generateRandomString = (length: number) => {
@@ -46,7 +46,7 @@ export const useAuth = () => {
     const params = {
       grant_type: 'refresh_token',
       refresh_token: refreshToken,
-      client_id: clientId,
+      client_id: spotify.clientId,
     };
 
     const payload = {
@@ -86,11 +86,11 @@ export const useAuth = () => {
     localStorage.setItem('reactify:auth_state', state);
 
     const params = {
-      client_id: clientId,
+      client_id: spotify.clientId,
       response_type: 'code',
-      redirect_uri: redirectUrl.toString(),
+      redirect_uri: spotify.redirectUrl.toString(),
       state,
-      scope: scopes.join(' '),
+      scope: spotify.scopes.join(' '),
       code_challenge_method: 'S256',
       code_challenge: codeChallenge,
     };
@@ -133,8 +133,8 @@ export const useAuth = () => {
     const params = {
       grant_type: 'authorization_code',
       code,
-      redirect_uri: redirectUrl.toString(),
-      client_id: clientId,
+      redirect_uri: spotify.redirectUrl.toString(),
+      client_id: spotify.clientId,
       code_verifier: codeVerifier,
     };
 
@@ -168,6 +168,10 @@ export const useAuth = () => {
     };
 
     localStorage.setItem('reactify:access_token', JSON.stringify(accessToken));
+
+    // remove state and verifier from local storage
+    localStorage.removeItem('reactify:auth_state');
+    localStorage.removeItem('reactify:code_verifier');
 
     setTimeout(() => refreshToken, body.expires_in - 300000);
   };

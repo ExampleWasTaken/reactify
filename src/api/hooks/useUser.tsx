@@ -4,7 +4,7 @@ import { User } from '@spotify/web-api-ts-sdk';
 import { SearchParams } from '../Spotify.ts';
 
 export const useUser = () => {
-  const { buildUrl } = use_internal_spotifyAPIContext();
+  const spotify = use_internal_spotifyAPIContext();
   const { getRequest } = use_internal_fetch();
 
   /**
@@ -12,13 +12,16 @@ export const useUser = () => {
    * @param user_id The user's Spotify user ID.
    */
   const getUser = async (user_id: string) => {
-    const url = await buildUrl(`/users/${user_id}`);
+    const url = await spotify.buildUrl(`/users/${user_id}`);
 
     return await getRequest<User>(url);
   };
 
   const isFollowingPlaylist = async (playlist_id: string, ids: string[]) => {
-    const url = await buildUrl(`/playlist/${playlist_id}/followers/contains`, new SearchParams({ ids: ids.join(',') }));
+    const url = await spotify.buildUrl(
+      `/playlist/${playlist_id}/followers/contains`,
+      new SearchParams({ ids: ids.join(',') })
+    );
 
     return await getRequest<boolean[]>(url);
   };

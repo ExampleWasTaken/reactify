@@ -25,7 +25,7 @@ export const use_internal_fetch = () => {
       const options: RequestInit = {
         method: method,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token.access_token}`,
           'Content-Type': contentType,
         },
         body: body ? (typeof body === 'string' ? body : JSON.stringify(body)) : undefined,

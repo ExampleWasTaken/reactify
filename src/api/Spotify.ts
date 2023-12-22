@@ -46,7 +46,7 @@ export class Spotify {
       return new URL(this.baseUrl + endpoint);
     }
 
-    return new URL(this.baseUrl + endpoint + params?.toString());
+    return new URL(this.baseUrl + endpoint + params.toString());
   }
 }
 
@@ -61,10 +61,10 @@ export class SearchParams {
     const keys = Object.keys(this.params);
     const values = Object.values(this.params);
 
-    const string = '';
+    let string = '?';
     for (let i = 0; i < keys.length; i++) {
       if (values[i]) {
-        string.concat(`${keys[i]}=${values[i]}&`);
+        string += `${keys[i]}=${values[i]}&`;
       }
     }
     return string;

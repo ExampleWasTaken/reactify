@@ -4,7 +4,7 @@ import { Devices, Market, MaxInt, PlaybackState, Queue, RecentlyPlayedTracksPage
 import { SearchParams } from '../Spotify.ts';
 
 export const usePlayer = () => {
-  const { buildUrl } = use_internal_spotifyAPIContext();
+  const spotify = use_internal_spotifyAPIContext();
   const { getRequest, postRequest, putRequest } = use_internal_fetch();
 
   /**
@@ -19,7 +19,7 @@ export const usePlayer = () => {
    * In addition to providing this parameter, make sure that your client properly handles cases of new types in the future by checking against the type field of each object.
    */
   const getPlaybackState = async (market?: Market, additional_types?: string) => {
-    const url = await buildUrl('/me/player', new SearchParams({ market, additional_types }));
+    const url = await spotify.buildUrl('/me/player', new SearchParams({ market, additional_types }));
 
     return await getRequest<PlaybackState>(url);
   };
@@ -34,7 +34,7 @@ export const usePlayer = () => {
    * **false** or not provided: keep the current playback state.
    */
   const transferPlayback = async (device_ids: string[], play?: boolean) => {
-    const url = await buildUrl('/me/player');
+    const url = await spotify.buildUrl('/me/player');
 
     return await putRequest<void, string>(url, JSON.stringify({ device_ids: device_ids, play }));
   };
@@ -43,7 +43,7 @@ export const usePlayer = () => {
    * Get information about a user’s available Spotify Connect devices. Some device models are not supported and will not be listed in the API response.
    */
   const getAvailableDevices = async () => {
-    const url = await buildUrl('/me/player/devices');
+    const url = await spotify.buildUrl('/me/player/devices');
 
     return await getRequest<Devices>(url);
   };
@@ -60,7 +60,7 @@ export const usePlayer = () => {
    * In addition to providing this parameter, make sure that your client properly handles cases of new types in the future by checking against the type field of each object.
    */
   const getCurrentlyPlayingTrack = async (market?: Market, additional_types?: string) => {
-    const url = await buildUrl('/me/player', new SearchParams({ market, additional_types }));
+    const url = await spotify.buildUrl('/me/player', new SearchParams({ market, additional_types }));
 
     return await getRequest<PlaybackState>(url);
   };
@@ -72,7 +72,7 @@ export const usePlayer = () => {
     offset?: object,
     position_ms?: number
   ) => {
-    const url = await buildUrl('/me/player/play', new SearchParams({ device_id }));
+    const url = await spotify.buildUrl('/me/player/play', new SearchParams({ device_id }));
 
     return await putRequest<void, string>(url, JSON.stringify({ context_uri, uris, offset, position_ms }));
   };
@@ -83,7 +83,7 @@ export const usePlayer = () => {
    * @param device_id The id of the device this command is targeting. If not supplied, the user's currently active device is the target.
    */
   const pausePlayback = async (device_id?: string) => {
-    const url = await buildUrl('/me/player/pause', new SearchParams({ device_id }));
+    const url = await spotify.buildUrl('/me/player/pause', new SearchParams({ device_id }));
 
     return await putRequest<void, void>(url, undefined);
   };
@@ -94,7 +94,7 @@ export const usePlayer = () => {
    * @param device_id The id of the device this command is targeting. If not supplied, the user's currently active device is the target.
    */
   const skipToNext = async (device_id?: string) => {
-    const url = await buildUrl('/me/player/next', new SearchParams({ device_id }));
+    const url = await spotify.buildUrl('/me/player/next', new SearchParams({ device_id }));
 
     return await postRequest<void, void>(url, undefined);
   };
@@ -105,7 +105,7 @@ export const usePlayer = () => {
    * @param device_id The id of the device this command is targeting. If not supplied, the user's currently active device is the target.
    */
   const skipToPrevious = async (device_id?: string) => {
-    const url = await buildUrl('/me/player/previous', new SearchParams({ device_id }));
+    const url = await spotify.buildUrl('/me/player/previous', new SearchParams({ device_id }));
 
     return await postRequest<void, void>(url, undefined);
   };
@@ -118,7 +118,7 @@ export const usePlayer = () => {
    * @param device_id The id of the device this command is targeting. If not supplied, the user's currently active device is the target.
    */
   const seekToPosition = async (position_ms: number, device_id?: string) => {
-    const url = await buildUrl('me/player/seek', new SearchParams({ position_ms, device_id }));
+    const url = await spotify.buildUrl('me/player/seek', new SearchParams({ position_ms, device_id }));
 
     return await putRequest<void, void>(url, undefined);
   };
@@ -133,7 +133,7 @@ export const usePlayer = () => {
    * @param device_id The id of the device this command is targeting. If not supplied, the user's currently active device is the target.
    */
   const setRepeatMode = async (state: 'track' | 'context' | 'off', device_id?: string) => {
-    const url = await buildUrl('/me/player/repeat', new SearchParams({ state, device_id }));
+    const url = await spotify.buildUrl('/me/player/repeat', new SearchParams({ state, device_id }));
 
     return await putRequest<void, void>(url, undefined);
   };
@@ -145,7 +145,7 @@ export const usePlayer = () => {
    * @param device_id The id of the device this command is targeting. If not supplied, the user's currently active device is the target.
    */
   const setVolume = async (volume_percent: MaxInt<100>, device_id?: string) => {
-    const url = await buildUrl('/me/player/volume', new SearchParams({ volume_percent, device_id }));
+    const url = await spotify.buildUrl('/me/player/volume', new SearchParams({ volume_percent, device_id }));
 
     return await putRequest<void, void>(url, undefined);
   };
@@ -158,7 +158,7 @@ export const usePlayer = () => {
    * @param device_id The id of the device this command is targeting. If not supplied, the user's currently active device is the target.
    */
   const toggleShuffle = async (state: boolean, device_id?: string) => {
-    const url = await buildUrl('/me/player/shuffle', new SearchParams({ state: state.toString(), device_id }));
+    const url = await spotify.buildUrl('/me/player/shuffle', new SearchParams({ state: state.toString(), device_id }));
 
     return await putRequest<void, void>(url, undefined);
   };
@@ -172,7 +172,7 @@ export const usePlayer = () => {
    * If before is specified, after must not be specified.
    */
   const getRecentlyPlayedTracks = async (limit?: MaxInt<50>, after?: number, before?: number) => {
-    const url = await buildUrl('/me/player/recently-played', new SearchParams({ limit, after, before }));
+    const url = await spotify.buildUrl('/me/player/recently-played', new SearchParams({ limit, after, before }));
 
     return getRequest<RecentlyPlayedTracksPage>(url);
   };
@@ -181,7 +181,7 @@ export const usePlayer = () => {
    * Get the list of objects that make up the user's queue.
    */
   const getQueue = async () => {
-    const url = await buildUrl('/me/player/queue');
+    const url = await spotify.buildUrl('/me/player/queue');
 
     return await getRequest<Queue>(url);
   };
@@ -193,7 +193,7 @@ export const usePlayer = () => {
    * @param device_id The id of the device this command is targeting. If not supplied, the user's currently active device is the target.
    */
   const addItemToQueue = async (uri: string, device_id?: string) => {
-    const url = await buildUrl('/me/player/queue', new SearchParams({ uri, device_id }));
+    const url = await spotify.buildUrl('/me/player/queue', new SearchParams({ uri, device_id }));
 
     return await postRequest<void, void>(url, undefined);
   };

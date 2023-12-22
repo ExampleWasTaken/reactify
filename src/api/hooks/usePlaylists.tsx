@@ -14,7 +14,7 @@ import {
 import { SearchParams } from '../Spotify.ts';
 
 export const usePlaylists = () => {
-  const { buildUrl } = use_internal_spotifyAPIContext();
+  const spotify = use_internal_spotifyAPIContext();
   const { deleteRequest, getRequest, postRequest, putRequest } = use_internal_fetch();
 
   /**
@@ -39,7 +39,14 @@ export const usePlaylists = () => {
    * by checking against the type field of each object.
    */
   const getPlaylist = async (playlist_id: string, market?: Market, fields?: string, additional_types?: string) => {
-    const url = await buildUrl(`/playlists/${playlist_id}`, new SearchParams({ market, fields, additional_types }));
+    const url = await spotify.buildUrl(
+      `/playlists/${playlist_id}`,
+      new SearchParams({
+        market,
+        fields,
+        additional_types,
+      })
+    );
 
     return await getRequest<Playlist>(url);
   };
@@ -60,7 +67,7 @@ export const usePlaylists = () => {
     collaborative?: boolean,
     description?: string
   ) => {
-    const url = await buildUrl(`/playlist/${playlist_id}`);
+    const url = await spotify.buildUrl(`/playlist/${playlist_id}`);
 
     return await putRequest<void, string>(url, JSON.stringify({ name, public: isPublic, collaborative, description }));
   };
@@ -96,7 +103,7 @@ export const usePlaylists = () => {
     offset?: number,
     additional_types?: string
   ) => {
-    const url = await buildUrl(
+    const url = await spotify.buildUrl(
       `/playlists/${playlist_id}/tracks`,
       new SearchParams({
         market,
@@ -141,7 +148,7 @@ export const usePlaylists = () => {
     range_length?: number,
     snapshot_id?: string
   ) => {
-    const url = await buildUrl(`/playlists/${playlist_id}/tracks`, new SearchParams({ playlist_id }));
+    const url = await spotify.buildUrl(`/playlists/${playlist_id}/tracks`, new SearchParams({ playlist_id }));
 
     return await putRequest<void, string>(
       url,
@@ -164,7 +171,7 @@ export const usePlaylists = () => {
    * to the playlist. Items are added in the order they appear in the uris array.
    */
   const addItems = async (playlist_id: string, uris?: string[], position?: number) => {
-    const url = await buildUrl(`/playlists/${playlist_id}/tracks`);
+    const url = await spotify.buildUrl(`/playlists/${playlist_id}/tracks`);
 
     return await postRequest<void, string>(url, JSON.stringify({ uris, position }));
   };
@@ -181,7 +188,7 @@ export const usePlaylists = () => {
       throw new Error(`Maximum number of tracks to delete exceeded. Sent: ${tracks.length}; Allowed: 100`);
     }
 
-    const url = await buildUrl(`playlists/${playlist_id}/tracks`);
+    const url = await spotify.buildUrl(`playlists/${playlist_id}/tracks`);
 
     return await deleteRequest<void, string>(url, JSON.stringify({ tracks, snapshot_id }));
   };
@@ -193,7 +200,7 @@ export const usePlaylists = () => {
    * Use with limit to get the next set of playlists.'
    */
   const getCurrentUsersPlaylists = async (limit?: MaxInt<50>, offset?: number) => {
-    const url = await buildUrl('/me/playlists', new SearchParams({ limit, offset }));
+    const url = await spotify.buildUrl('/me/playlists', new SearchParams({ limit, offset }));
 
     return await getRequest<Page<SimplifiedPlaylist>>(url);
   };
@@ -206,7 +213,7 @@ export const usePlaylists = () => {
    * Use with limit to get the next set of playlists.
    */
   const getUsersPlaylists = async (user_id: string, limit?: MaxInt<50>, offset?: number) => {
-    const url = await buildUrl(`/users/${user_id}/playlists`, new SearchParams({ limit, offset }));
+    const url = await spotify.buildUrl(`/users/${user_id}/playlists`, new SearchParams({ limit, offset }));
 
     return await getRequest<Page<Playlist>>(url);
   };
@@ -230,7 +237,7 @@ export const usePlaylists = () => {
     collaborative?: boolean,
     description?: string
   ) => {
-    const url = await buildUrl(`/users/${user_id}/playlists`);
+    const url = await spotify.buildUrl(`/users/${user_id}/playlists`);
 
     return await postRequest<void, string>(url, JSON.stringify({ name, public: _public, collaborative, description }));
   };
@@ -258,7 +265,7 @@ export const usePlaylists = () => {
     limit?: MaxInt<50>,
     offset?: number
   ) => {
-    const url = await buildUrl(
+    const url = await spotify.buildUrl(
       'browse/featured-playlists',
       new SearchParams({
         country,
@@ -285,7 +292,7 @@ export const usePlaylists = () => {
     limit?: MaxInt<50>,
     offset?: number
   ) => {
-    const url = await buildUrl(
+    const url = await spotify.buildUrl(
       `/browse/categories/${category_id}/playlists`,
       new SearchParams({
         country,
@@ -302,7 +309,7 @@ export const usePlaylists = () => {
    * @param playlist_id The Spotify ID of the playlist.
    */
   const getPlaylistCover = async (playlist_id: string) => {
-    const url = await buildUrl(`playlists/${playlist_id}/images`);
+    const url = await spotify.buildUrl(`playlists/${playlist_id}/images`);
 
     return await getRequest<Image[]>(url);
   };
@@ -313,7 +320,7 @@ export const usePlaylists = () => {
    * @param image Base64 encoded JPEG image data, maximum payload size is 256 KB.
    */
   const addPlaylistCover = async (playlist_id: string, image: string) => {
-    const url = await buildUrl(`playlists/${playlist_id}/images`);
+    const url = await spotify.buildUrl(`playlists/${playlist_id}/images`);
 
     return await putRequest<void, string>(url, image, 'image/jpeg');
   };

@@ -8,20 +8,20 @@ import { usePlaylists } from './usePlaylists.tsx';
 import { useTracks } from './useTracks.tsx';
 
 export const useCurrentUser = () => {
+  const spotify = use_internal_spotifyAPIContext();
+  const { deleteRequest, getRequest, putRequest } = use_internal_fetch();
+
   const { getCurrentUsersPlaylists } = usePlaylists();
   const player = usePlayer();
   const { getSavedTracks, saveTracks, removeSavedTracks, isSaved } = useTracks();
   const { getUsersSavedAlbums, saveAlbumsForCurrentUser, removeAlbumsForCurrentUser, checkUsersSavedAlbums } =
     useAlbums();
 
-  const { buildUrl } = use_internal_spotifyAPIContext();
-  const { deleteRequest, getRequest, putRequest } = use_internal_fetch();
-
   /**
    * Get detailed profile information about the current user (including the current user's username).
    */
   const getProfile = async () => {
-    const url = await buildUrl('/me');
+    const url = await spotify.buildUrl('/me');
 
     return await getRequest<UserProfile>(url);
   };
@@ -41,7 +41,7 @@ export const useCurrentUser = () => {
     limit?: MaxInt<50>,
     offset?: number
   ) => {
-    const url = await buildUrl(`/me/top/${type}`, new SearchParams({ time_range, limit, offset }));
+    const url = await spotify.buildUrl(`/me/top/${type}`, new SearchParams({ time_range, limit, offset }));
 
     return await getRequest<Page<T extends 'artists' ? Artist : Track>>(url);
   };
@@ -52,7 +52,7 @@ export const useCurrentUser = () => {
    * @param _public Defaults to true. If true the playlist will be included in user's public playlists, if false it will remain private.
    */
   const followPlaylist = async (playlist_id: string, _public?: boolean) => {
-    const url = await buildUrl(`/playlists/${playlist_id}/followers`);
+    const url = await spotify.buildUrl(`/playlists/${playlist_id}/followers`);
 
     return await putRequest<void, string>(url, JSON.stringify({ public: _public }));
   };
@@ -62,11 +62,12 @@ export const useCurrentUser = () => {
    * @param playlist_id The Spotify ID of the playlist.
    */
   const unfollowPlaylist = async (playlist_id: string) => {
-    const url = await buildUrl(`/playlists/${playlist_id}/followers`);
+    const url = await spotify.buildUrl(`/playlists/${playlist_id}/followers`);
 
     return await deleteRequest<void, void>(url, undefined);
   };
 
+  // TODO: rename to match API reference
   /**
    * Get the current user's followed artists.
    * @param type The ID type: currently only artist is supported.
@@ -74,7 +75,9 @@ export const useCurrentUser = () => {
    * @param limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
    */
   const getFollowing = async (type = 'artist', after?: string, limit?: MaxInt<50>) => {
-    const url = await buildUrl('/me/following', new SearchParams({ type, after, limit }));
+    const url = await spotify.buildUrl('/me/following', new SearchParams({ type, after, limit }));
+
+    console.log('FOLLOWING URL:', url);
 
     return await getRequest<FollowedArtists>(url);
   };
@@ -89,7 +92,7 @@ export const useCurrentUser = () => {
       throw new Error(`Maximum allowed users/artists per request exceeded. Got ${ids.length}; Allowed: 50`);
     }
 
-    const url = await buildUrl('/me/following', new SearchParams({ type }));
+    const url = await spotify.buildUrl('/me/following', new SearchParams({ type }));
 
     return await putRequest<void, string>(url, JSON.stringify(ids));
   };
@@ -104,7 +107,7 @@ export const useCurrentUser = () => {
       throw new Error(`Maximum allowed users/artists per request exceeded. Got ${ids.length}; Allowed: 50`);
     }
 
-    const url = await buildUrl('/me/following', new SearchParams({ type }));
+    const url = await spotify.buildUrl('/me/following', new SearchParams({ type }));
 
     return await deleteRequest<void, string>(url, JSON.stringify(ids));
   };
@@ -119,7 +122,7 @@ export const useCurrentUser = () => {
       throw new Error(`Maximum allowed users/artist per request exceeded. Got ${ids.length}; Allowed: 50`);
     }
 
-    const url = await buildUrl('/me/following/contains', new SearchParams({ type, ids: ids.join(',') }));
+    const url = await spotify.buildUrl('/me/following/contains', new SearchParams({ type, ids: ids.join(',') }));
 
     return await getRequest<boolean[]>(url);
   };

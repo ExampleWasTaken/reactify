@@ -4,7 +4,7 @@ import { Categories, Category, CountryCodeA2, MaxInt } from '@spotify/web-api-ts
 import { SearchParams } from '../Spotify.ts';
 
 export const useCategories = () => {
-  const { buildUrl } = use_internal_spotifyAPIContext();
+  const spotify = use_internal_spotifyAPIContext();
   const { getRequest } = use_internal_fetch();
 
   /**
@@ -20,7 +20,7 @@ export const useCategories = () => {
    * to Sweden but as German language strings.*
    */
   const getBrowseCategory = async (category_id: string, country?: CountryCodeA2, local?: string) => {
-    const url = await buildUrl(`/browse/categories/${category_id}`, new SearchParams({ country, local }));
+    const url = await spotify.buildUrl(`/browse/categories/${category_id}`, new SearchParams({ country, local }));
 
     return await getRequest<Category>(url);
   };
@@ -40,7 +40,7 @@ export const useCategories = () => {
    * @param offset The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.
    */
   const getBrowseCategories = async (country?: CountryCodeA2, locale?: string, limit?: MaxInt<50>, offset?: number) => {
-    const url = await buildUrl('/browser/categories', new SearchParams({ country, locale, limit, offset }));
+    const url = await spotify.buildUrl('/browser/categories', new SearchParams({ country, locale, limit, offset }));
 
     return await getRequest<Categories>(url);
   };

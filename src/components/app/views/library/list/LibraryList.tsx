@@ -1,76 +1,86 @@
-import { useEffect } from 'react';
-import { publicAssets } from '../../../../../utils/publicAssets.ts';
+import { useEffect, useState } from 'react';
+import { FollowedArtists, Page, SavedAlbum, SimplifiedPlaylist } from '@spotify/web-api-ts-sdk';
+import { useCurrentUser } from '../../../../../api/hooks/useCurrentUser.tsx';
+import { LibraryItem } from './LibraryItem.tsx';
+import { ContainerSpinner } from '../../../global/loaders/ContainerSpinner.tsx';
 
-// interface LibraryListObject {
-//   id: string;
-//   cover: string;
-//   name: string;
-//   type: string;
-//   /**
-//    * This is optional because artists have no owner.
-//    */
-//   owner?: string;
-// }
+interface LibraryListObject {
+  id: string;
+  cover: string;
+  name: string;
+  type: string;
+  /**
+   * This is optional because artists have no owner.
+   */
+  owner?: string;
+}
 
 // TODO: port to own api handling
-// const fetchLibrary = async (): Promise<LibraryListObject[]> => {
-//   const savedPlaylists = await sdk.currentUser.playlists.playlists();
-//   const savedAlbums = await sdk.currentUser.albums.savedAlbums();
-//   const followedArtists = await sdk.currentUser.followedArtists();
-//
-//   const sortedLibrary: LibraryListObject[] = [];
-//
-//   savedPlaylists.items.forEach(current => {
-//     sortedLibrary.push({
-//       id: current.uri,
-//       cover: current.images[0].url,
-//       name: current.name,
-//       type: current.type,
-//       owner: current.owner.display_name,
-//     });
-//   });
-//
-//   savedAlbums.items.forEach(current => {
-//     let artist: string;
-//     if (current.album.artists.length === 1) {
-//       artist = current.album.artists[0].name;
-//     } else if (current.album.artists.length === 2) {
-//       artist = `${current.album.artists[0].name} & ${current.album.artists[1].name}`;
-//     } else {
-//       artist = 'Various Artists';
-//     }
-//
-//     sortedLibrary.push({
-//       id: current.album.uri,
-//       cover: current.album.images[0].url,
-//       name: current.album.name,
-//       type: current.album.album_type,
-//       owner: artist,
-//     });
-//   });
-//
-//   followedArtists.artists.items.forEach(current => {
-//     sortedLibrary.push({
-//       id: current.uri,
-//       cover: current.images[0].url,
-//       name: current.name,
-//       type: current.type,
-//     });
-//   });
-//
-//   return sortedLibrary;
-// };
+const sortLibrary = async (
+  playlists: Page<SimplifiedPlaylist>,
+  albums: Page<SavedAlbum>,
+  artists: FollowedArtists
+): Promise<LibraryListObject[]> => {
+  const sortedLibrary: LibraryListObject[] = [];
+
+  playlists.items.forEach(current => {
+    sortedLibrary.push({
+      id: current.uri,
+      cover: current.images[0].url,
+      name: current.name,
+      type: current.type,
+      owner: current.owner.display_name,
+    });
+  });
+
+  albums.items.forEach(current => {
+    let artist: string;
+    if (current.album.artists.length === 1) {
+      artist = current.album.artists[0].name;
+    } else if (current.album.artists.length === 2) {
+      artist = `${current.album.artists[0].name} & ${current.album.artists[1].name}`;
+    } else {
+      artist = 'Various Artists';
+    }
+
+    sortedLibrary.push({
+      id: current.album.uri,
+      cover: current.album.images[0].url,
+      name: current.album.name,
+      type: current.album.album_type,
+      owner: artist,
+    });
+  });
+
+  artists.artists.items.forEach(current => {
+    sortedLibrary.push({
+      id: current.uri,
+      cover: current.images[0].url,
+      name: current.name,
+      type: current.type,
+    });
+  });
+
+  return sortedLibrary;
+};
 
 export const LibraryList = () => {
-  // const [library, setLibrary] = useState<LibraryListObject[] | null>(null);
-  // const [userProfilePic, setUserProfilePic] = useState('');
+  const [library, setLibrary] = useState<LibraryListObject[] | null>(null);
+  const [userProfilePic, setUserProfilePic] = useState('');
+
+  const { getPlaylists, getSavedAlbums, getFollowing, getProfile } = useCurrentUser();
 
   useEffect(() => {
-    // spotify.sdk.currentUser
-    //   .profile()
-    //   .then(profile => setUserProfilePic(profile.images[0].url))
-    //   .catch(() => setUserProfilePic(publicAssets.spotifyIconGreen));
-    // fetchLibrary().then(library => setLibrary(library));
+    const fetchLibrary = async () => {
+      const playlists = await getPlaylists();
+      const albums = await getSavedAlbums();
+      const followedArtists = await getFollowing();
+
+      return await sortLibrary(playlists, albums, followedArtists);
+    };
+
+    fetchLibrary().then(library => setLibrary(library));
+    getProfile().then(profile => setUserProfilePic(profile.images[0].url));
   }, []);
 
   // liked songs are not returned as playlist but need to be fetched through the
@@ -83,7 +93,7 @@ export const LibraryList = () => {
           {/* Remove and change for user icon once mockup is in place */}
           <img
             className="h-10 rounded-full"
-            src={/*userProfilePic*/ publicAssets.spotifyIconGreen}
+            src={userProfilePic}
             alt="User profile picture"
           />
           <h1 className="text-3xl">Your Library</h1>
@@ -95,7 +105,7 @@ export const LibraryList = () => {
         </div>*/}
       </header>
       <main>
-        {/*{library ? (
+        {library ? (
           <div
             className="py-4 flex flex-col space-y-4"
             style={{ paddingBottom: 'calc(137px + 1rem)' }}
@@ -114,7 +124,7 @@ export const LibraryList = () => {
           </div>
         ) : (
           <ContainerSpinner className="mt-52" />
-        )}*/}
+        )}
       </main>
     </>
   );

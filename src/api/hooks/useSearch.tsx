@@ -4,7 +4,7 @@ import { ItemTypes, Market, MaxInt, SearchResults } from '@spotify/web-api-ts-sd
 import { SearchParams } from '../Spotify.ts';
 
 export const useSearch = <T extends ItemTypes[]>() => {
-  const { buildUrl } = use_internal_spotifyAPIContext();
+  const spotify = use_internal_spotifyAPIContext();
   const { getRequest } = use_internal_fetch();
 
   /**
@@ -31,7 +31,7 @@ export const useSearch = <T extends ItemTypes[]>() => {
    * @param limit The maximum number of results to return in each item type.
    * @param offset The index of the first result to return. Use with limit to get the next page of search results.
    * @param include_external If include_external=audio is specified it signals that the client can play externally hosted
-   * audio content, and marks the content as playable in the response. By default externally hosted audio content is marked as unplayable in the response.
+   * audio content, and marks the content as playable in the response. By default, externally hosted audio content is marked as unplayable in the response.
    */
   const search = async (
     query: string,
@@ -41,7 +41,7 @@ export const useSearch = <T extends ItemTypes[]>() => {
     offset?: number,
     include_external?: 'audio'
   ) => {
-    const url = await buildUrl(
+    const url = await spotify.buildUrl(
       '/search',
       new SearchParams({
         query,

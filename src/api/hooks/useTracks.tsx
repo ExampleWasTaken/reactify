@@ -5,7 +5,7 @@ import { SearchParams } from '../Spotify.ts';
 import { RecommendationsRequest, RecommendationsResponse, SearchParamsObject } from '../types/InternalTypes.ts';
 
 export const useTracks = () => {
-  const { buildUrl } = use_internal_spotifyAPIContext();
+  const spotify = use_internal_spotifyAPIContext();
   const { deleteRequest, getRequest, putRequest } = use_internal_fetch();
 
   /**
@@ -17,7 +17,7 @@ export const useTracks = () => {
    * Users can view the country that is associated with their account in the account settings.*
    */
   const getTrack = async (id: string, market?: Market) => {
-    const url = await buildUrl(`tracks/${id}`, new SearchParams({ market }));
+    const url = await spotify.buildUrl(`tracks/${id}`, new SearchParams({ market }));
 
     return await getRequest<Track>(url);
   };
@@ -31,7 +31,7 @@ export const useTracks = () => {
    * Users can view the country that is associated with their account in the account settings.*
    */
   const getTracks = async (ids: string[], market?: Market) => {
-    const url = await buildUrl('tracks', new SearchParams({ market, ids: ids.join(',') }));
+    const url = await spotify.buildUrl('tracks', new SearchParams({ market, ids: ids.join(',') }));
 
     return await getRequest<Track[]>(url);
   };
@@ -46,7 +46,7 @@ export const useTracks = () => {
    * @param offset The index of the first item to return. Default: 0 (the first item). Use with limit to get the next set of items.
    */
   const getSavedTracks = async (market?: Market, limit?: MaxInt<50>, offset?: number) => {
-    const url = await buildUrl('/me/tracks', new SearchParams({ market, limit, offset }));
+    const url = await spotify.buildUrl('/me/tracks', new SearchParams({ market, limit, offset }));
 
     return await getRequest<Page<SavedTrack>>(url);
   };
@@ -61,7 +61,7 @@ export const useTracks = () => {
       throw new Error(`Maximum number of tracks per request exceeded. Got: ${ids.length}; Allowed: 50`);
     }
 
-    const url = await buildUrl('/me/tracks');
+    const url = await spotify.buildUrl('/me/tracks');
 
     return await putRequest<void, string>(url, JSON.stringify({ ids }));
   };
@@ -76,7 +76,7 @@ export const useTracks = () => {
       throw new Error(`Maximum number of tracks per request exceeded. Got: ${ids.length}; Allowed: 50`);
     }
 
-    const url = await buildUrl('/me/tracks');
+    const url = await spotify.buildUrl('/me/tracks');
 
     return await deleteRequest<void, string>(url, JSON.stringify({ ids }));
   };
@@ -90,7 +90,7 @@ export const useTracks = () => {
       throw new Error(`Maximum tracks per request exceeded. Got: ${ids.length}; Allowed: 50`);
     }
 
-    const url = await buildUrl('/me/tracks/contains', new SearchParams({ ids: ids.join(',') }));
+    const url = await spotify.buildUrl('/me/tracks/contains', new SearchParams({ ids: ids.join(',') }));
 
     return await getRequest<boolean[]>(url);
   };
@@ -104,7 +104,7 @@ export const useTracks = () => {
       throw new Error(`Maximum tracks per request exceeded. Got ${ids.length}; Allowed: 100`);
     }
 
-    const url = await buildUrl('/audio-features', new SearchParams({ ids: ids.join(',') }));
+    const url = await spotify.buildUrl('/audio-features', new SearchParams({ ids: ids.join(',') }));
 
     return await getRequest<AudioFeatures[]>(url);
   };
@@ -114,7 +114,7 @@ export const useTracks = () => {
    * @param id The Spotify ID for the track.
    */
   const getTrackAudioFeatures = async (id: string) => {
-    const url = await buildUrl(`/audio-features/${id}`);
+    const url = await spotify.buildUrl(`/audio-features/${id}`);
 
     return await getRequest<AudioFeatures>(url);
   };
@@ -125,7 +125,7 @@ export const useTracks = () => {
    * @param id The Spotify ID for the track.
    */
   const getTrackAudioAnalysis = async (id: string) => {
-    const url = await buildUrl(`/audio-analysis/${id}`);
+    const url = await spotify.buildUrl(`/audio-analysis/${id}`);
 
     return await getRequest<AudioAnalysis>(url);
   };
@@ -149,7 +149,7 @@ export const useTracks = () => {
       }
     }
 
-    const url = await buildUrl('/recommendations', new SearchParams(params));
+    const url = await spotify.buildUrl('/recommendations', new SearchParams(params));
 
     return await getRequest<RecommendationsResponse>(url);
   };
