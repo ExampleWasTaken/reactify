@@ -5,7 +5,7 @@ import { SpotifyAPIContext } from '../context/SpotifyAPIContext.ts';
 interface SpotifyWebAPIProps {
   clientId: string;
   redirectUrl: URL;
-  scopes: string[];
+  scopes: string;
   children: ReactNode;
 }
 

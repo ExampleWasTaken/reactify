@@ -3,11 +3,11 @@ import { SearchParamsObject } from './types/InternalTypes.ts';
 export class Spotify {
   private readonly _clientId: string;
   private readonly _redirectUrl: URL;
-  private readonly _scopes: string[];
+  private readonly _scopes: string;
 
   private readonly baseUrl: string;
 
-  constructor(clientId: string, redirectUrl: URL, scopes: string[]) {
+  constructor(clientId: string, redirectUrl: URL, scopes: string) {
     this._clientId = clientId;
     this._redirectUrl = redirectUrl;
     this._scopes = scopes;
@@ -23,7 +23,7 @@ export class Spotify {
     return this._redirectUrl;
   }
 
-  get scopes(): string[] {
+  get scopes(): string {
     return this._scopes;
   }
 
@@ -31,7 +31,7 @@ export class Spotify {
     switch (response.status) {
       case 401:
         throw new Error(
-          'Bad or expired token. The user may have revoked the token or the token as expired. Try re-authenticating the user.'
+          'Bad or expired token. The user may have revoked the token or the token has expired. Try re-authenticating the user.'
         );
       case 403:
         throw new Error('Bad OAuth request');

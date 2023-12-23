@@ -13,30 +13,11 @@ import { LibraryList } from './components/app/views/library/list/LibraryList.tsx
 import { Logout } from './components/app/views/auth/Logout.tsx';
 import { SpotifyWebAPI } from './api/components/SpotifyWebAPI.tsx';
 import { AppRoot } from './components/app/AppRoot.tsx';
+import env from './utils/public-env.ts';
 
+// This is only for testing purposes to have a quick way of knowing
+// if an issue is caused by strict mode rendering everything twice.
 const ENABLE_STRICT = true;
-
-const CLIENT_ID = '5ca64c0a829949428154075795560d0d';
-const REDIRECT_URL = 'https://localhost:5173/app/authflow';
-const SCOPES = [
-  'user-read-playback-state',
-  'user-modify-playback-state',
-  'user-read-currently-playing',
-  'streaming',
-  'playlist-read-private',
-  'playlist-read-collaborative',
-  'playlist-modify-private',
-  'playlist-modify-public',
-  'user-follow-modify',
-  'user-follow-read',
-  'user-read-playback-position',
-  'user-top-read',
-  'user-read-recently-played',
-  'user-library-modify',
-  'user-library-read',
-  'user-read-email',
-  'user-read-private',
-];
 
 const router = createBrowserRouter([
   {
@@ -104,9 +85,9 @@ if (ENABLE_STRICT) {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <SpotifyWebAPI
-        clientId={CLIENT_ID}
-        redirectUrl={new URL(REDIRECT_URL)}
-        scopes={SCOPES}
+        clientId={env.AUTH_CLIENT_ID}
+        redirectUrl={new URL(env.AUTH_REDIRECT_URL)}
+        scopes={env.AUTH_SCOPE}
       >
         <RouterProvider router={router} />
       </SpotifyWebAPI>
@@ -115,9 +96,9 @@ if (ENABLE_STRICT) {
 } else {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <SpotifyWebAPI
-      clientId={CLIENT_ID}
-      redirectUrl={new URL(REDIRECT_URL)}
-      scopes={SCOPES}
+      clientId={env.AUTH_CLIENT_ID}
+      redirectUrl={new URL(env.AUTH_REDIRECT_URL)}
+      scopes={env.AUTH_SCOPE}
     >
       <RouterProvider router={router} />
     </SpotifyWebAPI>

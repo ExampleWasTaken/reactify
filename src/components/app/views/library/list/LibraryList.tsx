@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FollowedArtists, Page, SavedAlbum, SimplifiedPlaylist } from '@spotify/web-api-ts-sdk';
 import { useCurrentUser } from '../../../../../api/hooks/useCurrentUser.tsx';
 import { LibraryItem } from './LibraryItem.tsx';
-import { ContainerSpinner } from '../../../global/loaders/ContainerSpinner.tsx';
+import { ContainerSpinner } from '../../../shared/loaders/ContainerSpinner.tsx';
 
 interface LibraryListObject {
   id: string;

@@ -1,28 +1,11 @@
 import { use_internal_spotifyAPIContext } from './internal/use_internal_spotifyAPIContext.tsx';
-import { AccessToken } from '@spotify/web-api-ts-sdk';
+
+import env from '../../utils/public-env.ts';
+import utils from '../../utils/utils.ts';
+import { AccessToken } from '../types/InternalTypes.ts';
 
 export const useAuth = () => {
   const spotify = use_internal_spotifyAPIContext();
-  const authUrl = new URL('https://accounts.spotify.com/authorize');
-
-  const generateRandomString = (length: number) => {
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const values = crypto.getRandomValues(new Uint8Array(length));
-    return values.reduce((acc, x) => acc + possible[x % possible.length], '');
-  };
-
-  const sha256 = async (plain: string) => {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(plain);
-    return window.crypto.subtle.digest('SHA-256', data);
-  };
-
-  const base64encode = (input: ArrayBuffer) => {
-    return btoa(String.fromCharCode(...new Uint8Array(input)))
-      .replace(/=/g, '')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_');
-  };
 
   const generateState = () => {
     return window.crypto.randomUUID().toString();
@@ -32,6 +15,9 @@ export const useAuth = () => {
     return state === localStorage.getItem('reactify:auth_state');
   };
 
+  /**
+   * Get a new access token using a refresh token.
+   */
   const refreshToken = async () => {
     const unverifiedAccessTokenData = localStorage.getItem('reactify:access_token');
 
@@ -41,7 +27,7 @@ export const useAuth = () => {
 
     const accessTokenData = JSON.parse(unverifiedAccessTokenData) as AccessToken;
     const refreshToken = accessTokenData.refresh_token;
-    const url = 'https://accounts.spotify.com/api/token';
+    const url = env.AUTH_REQUEST_TOKEN_URL;
 
     const params = {
       grant_type: 'refresh_token',
@@ -74,12 +60,19 @@ export const useAuth = () => {
     };
 
     localStorage.setItem('reactify:access_token', JSON.stringify(accessToken));
+
+    setTimeout(() => refreshToken, 1_800_000); // 30 minutes
   };
 
+  /**
+   * Request a code that can be traded for an access token. This function should be used to initiate authentication.
+   */
   const requestAuthorization = async (): Promise<void> => {
-    const codeVerifier = generateRandomString(128);
-    const hashed = await sha256(codeVerifier);
-    const codeChallenge = base64encode(hashed);
+    const authUrl = new URL(env.AUTH_URL);
+
+    const codeVerifier = utils.generateRandomString(128);
+    const hashed = await utils.sha256(codeVerifier);
+    const codeChallenge = utils.base64encode(hashed);
     const state = generateState();
 
     localStorage.setItem('reactify:code_verifier', codeVerifier);
@@ -90,7 +83,7 @@ export const useAuth = () => {
       response_type: 'code',
       redirect_uri: spotify.redirectUrl.toString(),
       state,
-      scope: spotify.scopes.join(' '),
+      scope: spotify.scopes,
       code_challenge_method: 'S256',
       code_challenge: codeChallenge,
     };
@@ -99,6 +92,9 @@ export const useAuth = () => {
     window.location.href = authUrl.toString();
   };
 
+  /**
+   * Request the access token using the code retrieved by `requestAuthorization()`.
+   */
   const requestAccessToken = async () => {
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -128,7 +124,7 @@ export const useAuth = () => {
     }
 
     // Response is valid -> request token
-    const url = 'https://accounts.spotify.com/api/token';
+    const url = env.AUTH_REQUEST_TOKEN_URL;
 
     const params = {
       grant_type: 'authorization_code',
@@ -148,16 +144,26 @@ export const useAuth = () => {
 
     const response = await fetch(url, payload);
 
-    // Log the response status and headers
+    const body = await response.json();
+
     console.log('Response Status:', response.status);
     console.log('Response Headers:', response.headers);
+    console.log('Response Body:', body);
 
-    const body = await response.json();
+    if (response.status !== 200) {
+      console.error(
+        'Authentication request returned status:',
+        response.status,
+        ' ',
+        response.statusText,
+        '\nBody:',
+        body
+      );
+      return;
+    }
 
     // Log the response body
     console.log('Response Body:', body);
-
-    // const body = (await response.json()) as AccessTokenResponse;
 
     const accessToken: AccessToken = {
       access_token: body.access_token,
@@ -173,18 +179,30 @@ export const useAuth = () => {
     localStorage.removeItem('reactify:auth_state');
     localStorage.removeItem('reactify:code_verifier');
 
-    setTimeout(() => refreshToken, body.expires_in - 300000);
+    setTimeout(() => refreshToken, 1_800_000); // 30 minutes
   };
 
+  /**
+   * Get the access token object from local storage. This function returning `null` means the user is not logged in.
+   */
   const getAccessToken = (): AccessToken | null => {
     const accessToken = localStorage.getItem('reactify:access_token');
     if (!accessToken) return null;
     return JSON.parse(accessToken) as AccessToken;
   };
 
+  /**
+   * Easy way to tell if the user is logged in. Basically just checks if `getAccessToken()` is null.
+   */
+  const isLoggedIn = () => {
+    return getAccessToken() !== null;
+  };
+
   return {
     requestAuthorization,
     requestAccessToken,
+    refreshToken,
     getAccessToken,
+    isLoggedIn,
   };
 };

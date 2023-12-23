@@ -4,6 +4,14 @@ export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export type SearchParamsObject = Record<string, string | number | undefined>;
 
+export interface AccessToken {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  refresh_token: string;
+  expires: number;
+}
+
 export interface AuthorizationResponse {
   code: string;
   state: string;
