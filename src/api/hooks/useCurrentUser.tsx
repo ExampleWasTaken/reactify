@@ -77,8 +77,6 @@ export const useCurrentUser = () => {
   const getFollowing = async (type = 'artist', after?: string, limit?: MaxInt<50>) => {
     const url = await spotify.buildUrl('/me/following', new SearchParams({ type, after, limit }));
 
-    console.log('FOLLOWING URL:', url);
-
     return await getRequest<FollowedArtists>(url);
   };
 
