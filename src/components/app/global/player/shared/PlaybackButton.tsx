@@ -3,6 +3,7 @@ import { IconContext } from 'react-icons';
 import { IoIosPause, IoIosPlay } from 'react-icons/io';
 import { toast } from 'react-hot-toast';
 import { useState } from 'react';
+import { usePlayer } from '../../../../../api/hooks/usePlayer.tsx';
 
 // TODO: port to own api handling
 interface PlaybackButtonProps {
@@ -15,6 +16,8 @@ const TOAST_OPTS = { id: 'playback_error' };
 
 export const PlaybackButton = ({ playbackState, size, className }: PlaybackButtonProps) => {
   const [playingBack, setPlayingBack] = useState(playbackState.is_playing);
+
+  const { pausePlayback, startResumePlayback } = usePlayer();
 
   const onPlay = () => {
     const deviceId = playbackState.device.id;
@@ -30,7 +33,7 @@ export const PlaybackButton = ({ playbackState, size, className }: PlaybackButto
     }
 
     setPlayingBack(true);
-    // startOrResumePlayback(deviceId).catch(() => setPlayingBack(false));
+    startResumePlayback(deviceId).catch(() => setPlayingBack(false));
   };
 
   const onPause = () => {
@@ -47,7 +50,7 @@ export const PlaybackButton = ({ playbackState, size, className }: PlaybackButto
     }
 
     setPlayingBack(false);
-    // pausePlayback(deviceId).catch(() => setPlayingBack(true));
+    pausePlayback(deviceId).catch(() => setPlayingBack(true));
   };
 
   return (

@@ -10,31 +10,38 @@ import { PlaybackButton } from '../shared/PlaybackButton.tsx';
 import Vibrant from 'node-vibrant/lib/bundle';
 import { useColorPalette } from '../../../../../hooks/useColorPalette.tsx';
 import { DeviceIcon } from '../shared/device-menu/DeviceIcon.tsx';
+import { useCurrentUser } from '../../../../../api/hooks/useCurrentUser.tsx';
+import { useTracks } from '../../../../../api/hooks/useTracks.tsx';
 // TODO: port to own api handling
 export const MiniPlayer = () => {
   const { calcProgress } = usePlaybackBar();
   const { formatArtists } = useArtistArray();
   const { getHighestPopulationWithBestContrast } = useColorPalette();
-
+  const { getPlaybackState } = useCurrentUser();
+  const { isSaved } = useTracks();
+  const [playbackState, setPlaybackState] = useState<PlaybackState | null>(null);
+  const [isCurrentlyPlayingLiked, setIsCurrentlyPlayingLiked] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState('#191414');
-  const [playbackState, _setPlaybackState] = useState<PlaybackState | null>(null);
 
   // This is needed as the API returns a cached value that is only updated once the playback state has changed.
   // This means that the progress value is not synchronized to the returned timestamp. Therefore, we must keep track of the timestamp ourselves.
-  const [lastPlaybackStateFetchTimestamp, _setLastPlaybackStateFetchTimestamp] = useState(0);
+  const [lastPlaybackStateFetchTimestamp, setLastPlaybackStateFetchTimestamp] = useState(0);
   const [progress, setProgress] = useState<PlaybackProgressInfo | null>(null);
 
   const playerTrackDetailsRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const playbackUpdateId = setInterval(() => {
-      // fetchPlaybackState()
-      //   .then(state => {
-      //     // console.log('Updating playback state:', state);
-      //     setPlaybackState(state);
-      //     setLastPlaybackStateFetchTimestamp(Date.now());
-      //   })
-      //   .catch(() => setPlaybackState(null));
+      getPlaybackState()
+        .then(state => {
+          setPlaybackState(state);
+          setLastPlaybackStateFetchTimestamp(Date.now());
+
+          isSaved([state.item.id])
+            .then(result => setIsCurrentlyPlayingLiked(result[0]))
+            .catch(e => console.error(`Something went wrong while checking if currently playing item is liked: ${e}`));
+        })
+        .catch(() => setPlaybackState(null));
     }, 1000);
 
     const progressUpdateId = setInterval(() => {
@@ -53,7 +60,7 @@ export const MiniPlayer = () => {
       clearInterval(playbackUpdateId);
     };
     //eslint-disable-next-line
-  }, [playbackState, lastPlaybackStateFetchTimestamp]);
+  }, [playbackState, lastPlaybackStateFetchTimestamp, isCurrentlyPlayingLiked]);
 
   useEffect(() => {
     if (!playbackState) return;
@@ -145,7 +152,7 @@ export const MiniPlayer = () => {
             <LikedSongHeart
               size={25}
               track={playbackState.item as Track}
-              liked={true} // FIXME: use actual state -> requires extra request to check if song is in saved tracks
+              liked={isCurrentlyPlayingLiked}
             />
             <DeviceIcon device={playbackState.device} />
           </IconContext.Provider>
