@@ -13,7 +13,7 @@ export const AppRoot = () => {
   const checkLoginStatus = () => {
     const at = getAccessToken();
     if (!at) {
-      navigate(routes.app.login);
+      navigate(routes.login);
     } else {
       console.log(at);
     }

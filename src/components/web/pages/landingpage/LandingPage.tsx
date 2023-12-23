@@ -32,7 +32,7 @@ export const LandingPage = () => {
             Reactify is designed to work as a standalone app on your device no matter your platform.
           </p>
           {/* TODO: /faq#pwa is not yet implemented. The exact link may chance in the future. */}
-          <Link to={routes.web.faq + '#pwa'}>Learn more...</Link>
+          <Link to={routes.faq + '#pwa'}>Learn more...</Link>
           <PrimaryButton
             className="block mt-12 px-16 h-12 rounded-lg"
             onClick={() => console.warn('Installing the app as PWA is not supported yet.')}

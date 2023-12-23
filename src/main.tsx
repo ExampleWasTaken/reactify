@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { AppError } from './components/app/views/error/AppError.tsx';
-import { AppLogin } from './components/app/views/login/AppLogin.tsx';
+import { AppLogin } from './components/app/views/auth/AppLogin.tsx';
 import { LandingPage } from './components/web/pages/landingpage/LandingPage.tsx';
 import { _404 } from './components/web/pages/404/404.tsx';
 import { WebRoot } from './components/web/WebRoot.tsx';
 import { About } from './components/web/pages/about/About.tsx';
-import { PostAuth } from './components/app/views/login/PostAuth.tsx';
-import { PostAuthFail } from './components/app/views/login/PostAuthFail.tsx';
+import { PostAuth } from './components/app/views/auth/PostAuth.tsx';
 import { LibraryList } from './components/app/views/library/list/LibraryList.tsx';
-import { Logout } from './components/app/Logout.tsx';
+import { Logout } from './components/app/views/auth/Logout.tsx';
 import { SpotifyWebAPI } from './api/components/SpotifyWebAPI.tsx';
 import { AppRoot } from './components/app/AppRoot.tsx';
 
@@ -84,19 +83,15 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: 'app/login',
+    path: '/login',
     element: <AppLogin />,
   },
   {
-    path: 'app/authflow',
+    path: '/auth',
     element: <PostAuth />,
   },
   {
-    path: 'app/authflow/fail',
-    element: <PostAuthFail />,
-  },
-  {
-    path: '/app/logout',
+    path: '/logout',
     element: <Logout />,
   },
   {

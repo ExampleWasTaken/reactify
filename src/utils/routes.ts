@@ -4,19 +4,16 @@
  * possible routes is easier to debug and more scalable.
  */
 export const routes = {
-  web: {
-    root: '/',
-    documentation: '/documentation',
-    faq: '/faq',
-    about: '/about',
-    thirdPartyLicenses: '3rd-party-licenses',
-  },
+  root: '/',
+  documentation: '/documentation',
+  faq: '/faq',
+  about: '/about',
+  thirdPartyLicenses: '3rd-party-licenses',
+  login: '/login',
+  authflow: '/auth',
   app: {
     home: '/app/home',
     search: '/app/search',
     library: '/app/library',
-    login: '/app/login',
-    authflow: '/app/authflow',
-    authflowFail: '/app/authflow/fail',
   },
 };

@@ -11,8 +11,8 @@ export const Footer = () => {
       </header>
       <section className="my-10 flex flex-col space-y-3">
         <h1 className="text-sm text-[#aaa]">PROJECT</h1>
-        <FooterLink to={routes.web.documentation}>Documentation</FooterLink>
-        <FooterLink to={routes.web.faq}>FAQs</FooterLink>
+        <FooterLink to={routes.documentation}>Documentation</FooterLink>
+        <FooterLink to={routes.faq}>FAQs</FooterLink>
         <FooterAnchor href="https://github.com/ExampleWasTaken/reactify">Repository</FooterAnchor>
         <FooterAnchor href="https://github.com/ExampleWasTaken/reactify/issues">Report an Issue</FooterAnchor>
       </section>
@@ -31,7 +31,7 @@ export const Footer = () => {
           License (GNU v3)
           {/* TODO: Verify that's the correct name of the license */}
         </FooterAnchor>
-        <FooterLink to={routes.web.thirdPartyLicenses}>3rd-Party Licenses</FooterLink>
+        <FooterLink to={routes.thirdPartyLicenses}>3rd-Party Licenses</FooterLink>
         {/* TODO: Add link to 3rd-party licenses once the generation of that file is implemented */}
       </section>
       <section className="my-10">
