@@ -13,15 +13,12 @@ const TOAST_OPTS = {
   id: 'auth_guard_error',
 };
 
-let preventRetry = false;
-
 export const AuthGuard = ({ children }: AuthGuardProps): JSX.Element => {
   const auth = useAuth();
   const navigate = useNavigate();
 
   // Indicates that the component is currently checking if the user is allowed to view the requested content.
   const [isLoading, setIsLoading] = useState(true);
-  const [label, setLabel] = useState('Checking login status');
 
   useEffect(() => {
     if (!auth.isLoggedIn()) {
@@ -30,9 +27,7 @@ export const AuthGuard = ({ children }: AuthGuardProps): JSX.Element => {
       return;
     }
 
-    if (preventRetry) return;
-    preventRetry = true;
-    setLabel('Requesting new token');
+    console.log('user is logged in');
 
     const accessToken = auth.getAccessToken()!;
 
@@ -40,15 +35,20 @@ export const AuthGuard = ({ children }: AuthGuardProps): JSX.Element => {
       console.log('refreshing token');
       auth
         .refreshToken()
-        .then(() => setIsLoading(false))
+        .then(() => {
+          setIsLoading(false);
+          console.log('got new access token');
+        })
         .catch(e => {
           navigate(routes.login);
           console.error(e);
           toast('Please login again', TOAST_OPTS);
           return;
         });
+    } else {
+      setIsLoading(false);
     }
-  }, [auth, navigate, children]);
+  }, [auth, navigate]);
 
-  return isLoading ? <FullscreenSpinner label={label} /> : <>{children}</>;
+  return isLoading ? <FullscreenSpinner label="Checking login" /> : <>{children}</>;
 };
