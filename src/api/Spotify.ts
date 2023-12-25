@@ -28,7 +28,6 @@ export class Spotify {
   }
 
   public async validateResponse(response: Response): Promise<void> {
-    console.log('validating resonse');
     switch (response.status) {
       case 401:
         throw new Error(
