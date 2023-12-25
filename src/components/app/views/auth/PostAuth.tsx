@@ -39,5 +39,5 @@ export const PostAuth = () => {
     getAccessToken().then();
   }, [navigate, requestAccessToken]);
 
-  return <FullscreenSpinner />;
+  return <FullscreenSpinner label="Requesting access token" />;
 };

@@ -11,5 +11,5 @@ export const Logout = () => {
     navigate(routes.login);
   }, []);
 
-  return <FullscreenSpinner />;
+  return <FullscreenSpinner label="Logging you out" />;
 };

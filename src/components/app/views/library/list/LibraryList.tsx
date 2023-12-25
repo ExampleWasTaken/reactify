@@ -123,7 +123,10 @@ export const LibraryList = () => {
             })}
           </div>
         ) : (
-          <ContainerSpinner className="mt-52" />
+          <ContainerSpinner
+            className="mt-52"
+            label="Loading your library"
+          />
         )}
       </main>
     </>
