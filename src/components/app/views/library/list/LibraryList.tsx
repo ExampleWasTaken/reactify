@@ -1,9 +1,8 @@
-import { LibraryItem } from './LibraryItem.tsx';
 import { useEffect, useState } from 'react';
-import { Spotify } from '../../../../../api/Spotify.ts';
-import { ContainerSpinner } from '../../../global/loaders/ContainerSpinner.tsx';
-import { useSpotify } from '../../../../../hooks/useSpotify.tsx';
-import { publicAssets } from '../../../../../utils/publicAssets.ts';
+import { FollowedArtists, Page, SavedAlbum, SimplifiedPlaylist } from '@spotify/web-api-ts-sdk';
+import { useCurrentUser } from '../../../../../api/hooks/useCurrentUser.tsx';
+import { LibraryItem } from './LibraryItem.tsx';
+import { ContainerSpinner } from '../../../shared/loaders/ContainerSpinner.tsx';
 
 interface LibraryListObject {
   id: string;
@@ -16,16 +15,15 @@ interface LibraryListObject {
   owner?: string;
 }
 
-const fetchLibrary = async (): Promise<LibraryListObject[]> => {
-  const sdk = Spotify.getInstance().sdk;
-
-  const savedPlaylists = await sdk.currentUser.playlists.playlists();
-  const savedAlbums = await sdk.currentUser.albums.savedAlbums();
-  const followedArtists = await sdk.currentUser.followedArtists();
-
+// TODO: port to own api handling
+const sortLibrary = async (
+  playlists: Page<SimplifiedPlaylist>,
+  albums: Page<SavedAlbum>,
+  artists: FollowedArtists
+): Promise<LibraryListObject[]> => {
   const sortedLibrary: LibraryListObject[] = [];
 
-  savedPlaylists.items.forEach(current => {
+  playlists.items.forEach(current => {
     sortedLibrary.push({
       id: current.uri,
       cover: current.images[0].url,
@@ -35,7 +33,7 @@ const fetchLibrary = async (): Promise<LibraryListObject[]> => {
     });
   });
 
-  savedAlbums.items.forEach(current => {
+  albums.items.forEach(current => {
     let artist: string;
     if (current.album.artists.length === 1) {
       artist = current.album.artists[0].name;
@@ -54,7 +52,7 @@ const fetchLibrary = async (): Promise<LibraryListObject[]> => {
     });
   });
 
-  followedArtists.artists.items.forEach(current => {
+  artists.artists.items.forEach(current => {
     sortedLibrary.push({
       id: current.uri,
       cover: current.images[0].url,
@@ -67,18 +65,23 @@ const fetchLibrary = async (): Promise<LibraryListObject[]> => {
 };
 
 export const LibraryList = () => {
-  const spotify = useSpotify();
-
   const [library, setLibrary] = useState<LibraryListObject[] | null>(null);
   const [userProfilePic, setUserProfilePic] = useState('');
 
+  const { getPlaylists, getSavedAlbums, getFollowing, getProfile } = useCurrentUser();
+
   useEffect(() => {
-    spotify.sdk.currentUser
-      .profile()
-      .then(profile => setUserProfilePic(profile.images[0].url))
-      .catch(() => setUserProfilePic(publicAssets.spotifyIconGreen));
+    const fetchLibrary = async () => {
+      const playlists = await getPlaylists();
+      const albums = await getSavedAlbums();
+      const followedArtists = await getFollowing();
+
+      return await sortLibrary(playlists, albums, followedArtists);
+    };
+
     fetchLibrary().then(library => setLibrary(library));
-  }, [spotify]);
+    getProfile().then(profile => setUserProfilePic(profile.images[0].url));
+  }, []);
 
   // liked songs are not returned as playlist but need to be fetched through the
   // Get User's Saved Tracks endpoint
@@ -120,7 +123,10 @@ export const LibraryList = () => {
             })}
           </div>
         ) : (
-          <ContainerSpinner className="mt-52" />
+          <ContainerSpinner
+            className="mt-52"
+            label="Loading your library"
+          />
         )}
       </main>
     </>

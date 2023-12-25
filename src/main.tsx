@@ -1,18 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
-import { AppRoot } from './components/app/AppRoot.tsx';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AppError } from './components/app/views/error/AppError.tsx';
-import { AppLogin } from './components/app/views/login/AppLogin.tsx';
+import { AppLogin } from './components/app/views/auth/AppLogin.tsx';
 import { LandingPage } from './components/web/pages/landingpage/LandingPage.tsx';
 import { _404 } from './components/web/pages/404/404.tsx';
 import { WebRoot } from './components/web/WebRoot.tsx';
 import { About } from './components/web/pages/about/About.tsx';
-import { PostAuth } from './components/app/views/login/PostAuth.tsx';
-import { PostAuthFail } from './components/app/views/login/PostAuthFail.tsx';
+import { PostAuth } from './components/app/views/auth/PostAuth.tsx';
 import { LibraryList } from './components/app/views/library/list/LibraryList.tsx';
-import { Logout } from './components/app/Logout.tsx';
+import { Logout } from './components/app/views/auth/Logout.tsx';
+import { SpotifyWebAPI } from './api/components/SpotifyWebAPI.tsx';
+import { AuthLayout } from './components/app/layouts/AuthLayout.tsx';
+import env from './utils/public-env.ts';
+import { BaseLayout } from './components/app/layouts/BaseLayout.tsx';
+
+// This is only for testing purposes to have a quick way of knowing
+// if an issue is caused by strict mode rendering everything twice.
+const ENABLE_STRICT = true;
 
 const router = createBrowserRouter([
   {
@@ -31,11 +37,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <Outlet />,
+    element: <BaseLayout />,
     children: [
       {
         path: 'app',
-        element: <AppRoot />,
+        element: <AuthLayout />,
         errorElement: <AppError />,
         children: [
           {
@@ -56,23 +62,19 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: 'login',
+        element: <AppLogin />,
+      },
+      {
+        path: 'auth',
+        element: <PostAuth />,
+      },
+      {
+        path: 'logout',
+        element: <Logout />,
+      },
     ],
-  },
-  {
-    path: 'app/login',
-    element: <AppLogin />,
-  },
-  {
-    path: 'app/authflow',
-    element: <PostAuth />,
-  },
-  {
-    path: 'app/authflow/fail',
-    element: <PostAuthFail />,
-  },
-  {
-    path: '/app/logout',
-    element: <Logout />,
   },
   {
     path: '*',
@@ -80,8 +82,26 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
-);
+if (ENABLE_STRICT) {
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <SpotifyWebAPI
+        clientId={env.AUTH_CLIENT_ID}
+        redirectUrl={new URL(env.AUTH_REDIRECT_URL)}
+        scopes={env.AUTH_SCOPE}
+      >
+        <RouterProvider router={router} />
+      </SpotifyWebAPI>
+    </React.StrictMode>
+  );
+} else {
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <SpotifyWebAPI
+      clientId={env.AUTH_CLIENT_ID}
+      redirectUrl={new URL(env.AUTH_REDIRECT_URL)}
+      scopes={env.AUTH_SCOPE}
+    >
+      <RouterProvider router={router} />
+    </SpotifyWebAPI>
+  );
+}

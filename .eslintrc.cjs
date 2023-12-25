@@ -23,7 +23,7 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'react/jsx-closing-bracket-location': ['error', 'line-aligned'],
-    'react/jsx-max-props-per-line': ['error', { 'maximum': 1}],
+    'react/jsx-max-props-per-line': ['error', { 'maximum': 1 }],
     'react/jsx-first-prop-new-line': ['error', 'multiline-multiprop'],
     'react/jsx-closing-tag-location': 'error',
     'react/jsx-wrap-multilines': [
@@ -35,12 +35,12 @@ module.exports = {
         'arrow': 'parens-new-line',
         'condition': 'parens-new-line',
         'logical': 'parens-new-line',
-        'prop': 'parens-new-line'
-      }
+        'prop': 'parens-new-line',
+      },
     ],
     '@typescript-eslint/ban-ts-comment': [
       'error',
-      {'ts-ignore': 'allow-with-description'}
+      { 'ts-ignore': 'allow-with-description' },
     ],
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -48,16 +48,17 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     'semi': ['error', 'always'],
     'endOfLine': 'off',
     'array-element-newline': [
       'error',
       {
         'ArrayExpression': 'consistent',
-        'ArrayPattern': { 'minItems': 3 }
-      }
+        'ArrayPattern': { 'minItems': 3 },
+      },
     ],
-    'object-curly-spacing': ['error', 'always', {'arraysInObjects': false}],
+    'object-curly-spacing': ['error', 'always', { 'arraysInObjects': false }],
     'no-trailing-spaces': ['error', { 'ignoreComments': true }],
     'prettier/prettier': ['error', { 'endOfLine': 'auto' }],
     'jsx-quotes': ['error', 'prefer-double'],
@@ -66,8 +67,8 @@ module.exports = {
     {
       'files': ['*.js'],
       'rules': {
-        '@typescript-eslint/explicit-function-return-type': 'off'
-      }
+        '@typescript-eslint/explicit-function-return-type': 'off',
+      },
     },
     {
       'files': ['*.tsx'],
@@ -75,7 +76,7 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 'off',
         'jsx-quotes': ['error', 'prefer-double'],
 
-      }
-    }
-  ]
-}
+      },
+    },
+  ],
+};
