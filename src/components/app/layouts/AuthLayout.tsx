@@ -1,11 +1,10 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { routes } from '../../utils/routes.ts';
+import { routes } from '../../../utils/routes.ts';
 import { useEffect } from 'react';
-import { AppFooter } from './shared/footer/AppFooter.tsx';
-import { Toaster } from 'react-hot-toast';
-import { AuthGuard } from './shared/auth/AuthGuard.tsx';
+import { AppFooter } from '../shared/footer/AppFooter.tsx';
+import { AuthGuard } from '../shared/auth/AuthGuard.tsx';
 
-export const AppRoot = () => {
+export const AuthLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -24,7 +23,6 @@ export const AppRoot = () => {
     >
       <AuthGuard>
         <Outlet />
-        <Toaster position="bottom-center" />
         <AppFooter />
       </AuthGuard>
     </div>

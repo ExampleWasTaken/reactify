@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AppError } from './components/app/views/error/AppError.tsx';
 import { AppLogin } from './components/app/views/auth/AppLogin.tsx';
 import { LandingPage } from './components/web/pages/landingpage/LandingPage.tsx';
@@ -12,8 +12,9 @@ import { PostAuth } from './components/app/views/auth/PostAuth.tsx';
 import { LibraryList } from './components/app/views/library/list/LibraryList.tsx';
 import { Logout } from './components/app/views/auth/Logout.tsx';
 import { SpotifyWebAPI } from './api/components/SpotifyWebAPI.tsx';
-import { AppRoot } from './components/app/AppRoot.tsx';
+import { AuthLayout } from './components/app/layouts/AuthLayout.tsx';
 import env from './utils/public-env.ts';
+import { BaseLayout } from './components/app/layouts/BaseLayout.tsx';
 
 // This is only for testing purposes to have a quick way of knowing
 // if an issue is caused by strict mode rendering everything twice.
@@ -36,11 +37,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <Outlet />,
+    element: <BaseLayout />,
     children: [
       {
         path: 'app',
-        element: <AppRoot />,
+        element: <AuthLayout />,
         errorElement: <AppError />,
         children: [
           {
@@ -61,19 +62,19 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: 'login',
+        element: <AppLogin />,
+      },
+      {
+        path: 'auth',
+        element: <PostAuth />,
+      },
+      {
+        path: 'logout',
+        element: <Logout />,
+      },
     ],
-  },
-  {
-    path: '/login',
-    element: <AppLogin />,
-  },
-  {
-    path: '/auth',
-    element: <PostAuth />,
-  },
-  {
-    path: '/logout',
-    element: <Logout />,
   },
   {
     path: '*',
