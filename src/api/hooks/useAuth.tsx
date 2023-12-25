@@ -195,7 +195,15 @@ export const useAuth = () => {
    * Easy way to tell if the user is logged in. Basically just checks if `getAccessToken()` is null.
    */
   const isLoggedIn = () => {
-    return getAccessToken() !== null;
+    const accessToken = getAccessToken();
+    return (
+      accessToken &&
+      accessToken.access_token &&
+      accessToken.token_type &&
+      accessToken.expires_in &&
+      accessToken.refresh_token &&
+      accessToken.expires
+    );
   };
 
   return {
