@@ -3,7 +3,7 @@ import { Artist, Market, MaxInt, Page, SimplifiedAlbum, TopTracksResult } from '
 import { ArtistAlbumsIncludeGroup } from '../../types/InternalTypes.ts';
 import { SearchParams } from '../../Spotify.ts';
 
-export class Artists {
+export class ArtistsEndpoint {
   private readonly spotify: Spotify;
 
   constructor(spotify: Spotify) {

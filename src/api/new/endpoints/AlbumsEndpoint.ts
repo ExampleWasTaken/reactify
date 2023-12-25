@@ -2,7 +2,7 @@ import { Spotify } from '../Spotify.ts';
 import { Album, CountryCodeA2, Market, MaxInt, NewReleases, Page, SavedAlbum, Track } from '@spotify/web-api-ts-sdk';
 import { SearchParams } from '../../Spotify.ts';
 
-export class Albums {
+export class AlbumsEndpoint {
   private readonly spotify: Spotify;
 
   constructor(spotify: Spotify) {
