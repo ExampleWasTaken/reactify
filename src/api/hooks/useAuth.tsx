@@ -170,7 +170,7 @@ export const useAuth = () => {
       token_type: body.token_type,
       refresh_token: body.refresh_token,
       expires_in: body.expires_in,
-      expires: Date.now() + body.expires_in,
+      expires: Date.now() + body.expires_in * 1000,
     };
 
     localStorage.setItem('reactify:access_token', JSON.stringify(accessToken));
