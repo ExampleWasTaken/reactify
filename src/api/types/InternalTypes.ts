@@ -1,6 +1,6 @@
 import { Track } from '@spotify/web-api-ts-sdk';
 
-export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export type SearchParamsObject = Record<string, string | number | undefined>;
 

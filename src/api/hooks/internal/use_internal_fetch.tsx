@@ -1,4 +1,4 @@
-import { RequestMethod } from '../../types/InternalTypes.ts';
+import { HTTPMethod } from '../../types/InternalTypes.ts';
 import { use_internal_spotifyAPIContext } from './use_internal_spotifyAPIContext.tsx';
 import { useAuth } from '../useAuth.tsx';
 
@@ -9,7 +9,7 @@ export const use_internal_fetch = () => {
   const { getAccessToken } = useAuth();
 
   const performRequest = async <TReturnType,>(
-    method: RequestMethod,
+    method: HTTPMethod,
     url: URL,
     body?: unknown,
     contentType = 'application/json'

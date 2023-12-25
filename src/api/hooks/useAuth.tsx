@@ -65,7 +65,7 @@ export const useAuth = () => {
   };
 
   /**
-   * Request a code that can be traded for an access token. This function should be used to initiate authentication.
+   * APIRequest a code that can be traded for an access token. This function should be used to initiate authentication.
    */
   const requestAuthorization = async (): Promise<void> => {
     const authUrl = new URL(env.AUTH_URL);
@@ -93,7 +93,7 @@ export const useAuth = () => {
   };
 
   /**
-   * Request the access token using the code retrieved by `requestAuthorization()`.
+   * APIRequest the access token using the code retrieved by `requestAuthorization()`.
    */
   const requestAccessToken = async () => {
     const urlParams = new URLSearchParams(window.location.search);
